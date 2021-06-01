@@ -1,0 +1,18 @@
+-lib hlsdl
+-lib heaps
+-lib heeps
+-lib HeapsComponentsBase
+-lib hxmath
+-lib vector-math
+-lib ldtk-haxe-api
+
+-cp src
+-p res
+
+-D windowTitle=Game
+-D hlgen.makefile=vs2015
+
+-main Main
+-hl bin/hlc/Main.c
+
+-debug

@@ -1,0 +1,17 @@
+-lib hlsdl
+-lib heaps
+-lib heeps
+-lib HeapsComponentsBase
+-lib hxmath
+-lib vector-math
+-lib ldtk-haxe-api
+
+-cp src
+-p res
+
+-D windowTitle=Game
+
+-main Main
+-hl bin/Main.hl
+
+-debug
