@@ -22,12 +22,12 @@ class Prefabs {
                 color = 0x0000FF;
         }
 
-        var col = new CollisionCircle("Collider", 16);
+        var col = new CollisionCircle("Collider", 8);
         col.tags.push("Select");
         col.tags.push("Unit");
 
         return [
-            new Sprite("Sprite", h2d.Tile.fromColor(color, 32, 32), 0, OriginPoint.Center),
+            new Sprite("Sprite", h2d.Tile.fromColor(color, 16, 16), 0, OriginPoint.Center),
             new Selectable("Selectable"),
             col,
             new Navigation("Nav"),

@@ -28,10 +28,18 @@ class Room extends hcb.Room {
         scene.camera.y = view.pixelY;
 
         var guiHeight = height - view.height;
-        trace(guiHeight);
 
         scene.scaleMode = ScaleMode.LetterBox(width, height, false, ScaleModeAlign.Center, ScaleModeAlign.Center);
 
+        // * Control Panel
+        var panel = ControlPanel.instance;
+        panel.x = view.pixelX;
+        panel.y = view.pixelY + view.height;
+        drawTo.add(panel, 1);
+        var g = new h2d.Graphics(panel);
+        g.beginFill(0xFFFFFF);
+        g.drawRect(0, 0, width, guiHeight);
+        g.endFill();
 
         // * Collisions
         var indexGrid: hcb.IndexGrid.IGrid = hcb.IndexGrid.ldtkTilesConvert(level.l_Collisions);
@@ -49,14 +57,13 @@ class Room extends hcb.Room {
         scene.add(collisionRender, 0);
 
         // * Pathfinding
-        var gridSize = vec2(Math.floor(levelW/32), Math.floor(levelH/32));
-        pathfindingGrid = new PathfindingGrid(32, gridSize);
+        var gridSize = vec2(Math.floor(levelW/16), Math.floor(levelH/16));
+        pathfindingGrid = new PathfindingGrid(16, gridSize);
         pathfindingGrid.addCollisionShapes(collisionWorld, "Static");
 
         // * Entities
         var playerContollerEnt: Entity = new Entity(Prefabs.generatePlayerController());
         addEntity(playerContollerEnt);
         LdtkEntities.ldtkAddEntities(this, cast level.l_Entities.getAllUntyped(), 0);
-
     }
 }
