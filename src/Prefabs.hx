@@ -35,9 +35,16 @@ class Prefabs {
         col.tags.push("Select");
         col.tags.push("Unit");
 
+        var selectable: Selectable = new Selectable(name, portrat);
+        selectable.actions.push({
+            name: "Build",
+            icon: Res.Actions.BuildActionIcon.toTile(),
+            callBack: () -> trace("Nice")
+        });
+
         return [
             new Sprite("Sprite", h2d.Tile.fromColor(color, 16, 16), 0, OriginPoint.Center),
-            new Selectable(name, portrat),
+            selectable,
             col,
             new Navigation("Nav"),
             new MoveableUnit("Move", col),

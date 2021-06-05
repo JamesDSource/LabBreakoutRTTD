@@ -3,6 +3,7 @@ import VectorMath;
 
 typedef Action = {
     name: String,
+    icon: h2d.Tile,
     callBack: () -> Void
 }
 
@@ -10,6 +11,7 @@ class Selectable extends Component {
     public var selected(default, set): Bool = false;
     public var portrait(default, null): h2d.Tile;
     public var outline: h2d.filter.Outline;
+    public var actions: Array<Action> = [];
 
     private function set_selected(selected: Bool): Bool {
         if(selected != this.selected) {

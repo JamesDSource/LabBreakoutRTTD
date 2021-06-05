@@ -19,7 +19,8 @@ class ControlPanel extends Object {
     private var descriptionFrame: h2d.ScaleGrid;
     private var nameTxt: h2d.Text;
 
-    public var actionsFrame: h2d.ScaleGrid;
+    private var actionsFrame: h2d.ScaleGrid;
+    private var actionIconFrame: h2d.Tile;
 
     public static final instance: ControlPanel = new ControlPanel();
 
