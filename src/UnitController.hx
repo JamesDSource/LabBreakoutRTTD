@@ -40,7 +40,7 @@ class UnitController extends hcb.comp.Component {
             // ^ If dragging, clamp the mouse position to the divider
 
         if(mousePos.y >= roomExt.divider) {
-
+            ControlPanel.instance.getMouseInputs(mousePos.x, mousePos.y);
         }
         else {
             getSelectionInputs(mousePos);

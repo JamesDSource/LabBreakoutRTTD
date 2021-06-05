@@ -19,15 +19,15 @@ class Prefabs {
         switch(entity.f_UnitType) {
             case Enum_UnitType.Soldier:
                 color = 0xFF0000;
-                portrat = Res.portraits.SoldierPortrait.toTile();
+                portrat = Res.TexturePack.get("SoldierPortrait");
                 name = "Soldier";
             case Enum_UnitType.Scientist:
                 color = 0x00FF00;
-                portrat = Res.portraits.ScientistPortrait.toTile();
+                portrat = Res.TexturePack.get("ScientistPortrait");
                 name = "Scientist";
             case Enum_UnitType.Engineer:
                 color = 0x0000FF;
-                portrat = Res.portraits.EngineerPortrait.toTile();
+                portrat = Res.TexturePack.get("EngineerPortrait");
                 name = "Engineer";
         }
 
@@ -38,8 +38,18 @@ class Prefabs {
         var selectable: Selectable = new Selectable(name, portrat);
         selectable.actions.push({
             name: "Build",
-            icon: Res.Actions.BuildActionIcon.toTile(),
-            callBack: () -> trace("Nice")
+            icon: Res.TexturePack.get("BuildActionIcon"),
+            callBack: () -> trace("Nice 1")
+        });
+        selectable.actions.push({
+            name: "Repair",
+            icon: Res.TexturePack.get("RepairActionIcon"),
+            callBack: () -> trace("Nice 2")
+        });
+        selectable.actions.push({
+            name: "Remove",
+            icon: Res.RemoveActionIcon.toTile(),
+            callBack: () -> trace("Nice 3")
         });
 
         return [

@@ -1,0 +1,48 @@
+
+TexturePack.png
+size: 512, 64
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+ActionIconFrame
+  rotate: false
+  xy: 192, 30
+  size: 34, 34
+  orig: 34, 34
+  offset: 0, 0
+  index: -1
+BuildActionIcon
+  rotate: false
+  xy: 226, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+EngineerPortrait
+  rotate: false
+  xy: 0, 0
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+RepairActionIcon
+  rotate: false
+  xy: 226, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+ScientistPortrait
+  rotate: false
+  xy: 64, 0
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+SoldierPortrait
+  rotate: false
+  xy: 128, 0
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
