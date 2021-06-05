@@ -8,6 +8,13 @@ class Room extends hcb.Room {
     private var level: LdtkLevelData.LdtkLevelData_Level;
     public var pathfindingGrid(default, null): PathfindingGrid;
 
+    public var guiHeight: Float;
+    public var view: LdtkLevelData.Entity_View;
+    public var divider: Float;
+
+    public static final width: Int = 960;
+    public static final height: Int = 540;
+
     public function new(level: LdtkLevelData.LdtkLevelData_Level) {
         super();
         this.level = level;
@@ -17,29 +24,25 @@ class Room extends hcb.Room {
         drawTo = new h2d.Layers();
         scene.add(drawTo, 0);
 
-        var width = 960;
-        var height = 540;
+        scene.add(Main.mouseHint, 3);
 
         var levelW: Float = level.pxWid;
         var levelH: Float = level.pxHei;
 
-        var view = level.l_Entities.all_View[0];
+        view = level.l_Entities.all_View[0];
         scene.camera.x = view.pixelX;
         scene.camera.y = view.pixelY;
 
-        var guiHeight = height - view.height;
+        guiHeight = height - view.height;
 
         scene.scaleMode = ScaleMode.LetterBox(width, height, false, ScaleModeAlign.Center, ScaleModeAlign.Center);
 
         // * Control Panel
+        divider = view.pixelY + view.height;
         var panel = ControlPanel.instance;
         panel.x = view.pixelX;
-        panel.y = view.pixelY + view.height;
+        panel.y = divider;
         drawTo.add(panel, 1);
-        var g = new h2d.Graphics(panel);
-        g.beginFill(0xFFFFFF);
-        g.drawRect(0, 0, width, guiHeight);
-        g.endFill();
 
         // * Collisions
         var indexGrid: hcb.IndexGrid.IGrid = hcb.IndexGrid.ldtkTilesConvert(level.l_Collisions);

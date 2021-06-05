@@ -1,3 +1,4 @@
+import hxd.Res;
 import hcb.Origin.OriginPoint;
 import hcb.comp.*;
 import hcb.comp.col.*;
@@ -13,13 +14,21 @@ class Prefabs {
     public static function generateUnit(?ent: ldtk.Entity): Array<Component> {
         var entity: LdtkLevelData.Entity_Unit = cast ent;
         var color: Int = 0;
+        var portrat: h2d.Tile = null;
+        var name: String = "";
         switch(entity.f_UnitType) {
             case Enum_UnitType.Soldier:
                 color = 0xFF0000;
+                portrat = Res.portraits.SoldierPortrait.toTile();
+                name = "Soldier";
             case Enum_UnitType.Scientist:
                 color = 0x00FF00;
+                portrat = Res.portraits.ScientistPortrait.toTile();
+                name = "Scientist";
             case Enum_UnitType.Engineer:
                 color = 0x0000FF;
+                portrat = Res.portraits.EngineerPortrait.toTile();
+                name = "Engineer";
         }
 
         var col = new CollisionCircle("Collider", 8);
@@ -28,7 +37,7 @@ class Prefabs {
 
         return [
             new Sprite("Sprite", h2d.Tile.fromColor(color, 16, 16), 0, OriginPoint.Center),
-            new Selectable("Selectable"),
+            new Selectable(name, portrat),
             col,
             new Navigation("Nav"),
             new MoveableUnit("Move", col),

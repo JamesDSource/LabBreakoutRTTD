@@ -6,7 +6,13 @@ class Main extends hxd.App {
     private var project: hcb.Project;
     private var levelData: LdtkLevelData;
 
+    public static var mouseHint: h2d.Text;
+
     private override function init() {
+        mouseHint = new h2d.Text(hxd.res.DefaultFont.get());
+        mouseHint.textAlign = h2d.Text.Align.Center;
+
+        ControlPanel.instance.build();
         Window.getInstance().displayMode = DisplayMode.Fullscreen;
 
         project = new hcb.Project(this);
@@ -25,6 +31,8 @@ class Main extends hxd.App {
 
     private override function update(dt: Float) {
         project.update(dt);
+        mouseHint.x = project.room.scene.mouseX;
+        mouseHint.y = project.room.scene.mouseY;
     }
 
     // * Loading assets by generating a pak file
