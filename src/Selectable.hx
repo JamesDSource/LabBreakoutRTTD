@@ -4,7 +4,9 @@ import VectorMath;
 typedef Action = {
     name: String,
     icon: h2d.Tile,
-    callBack: () -> Void
+    callBack: () -> Void,
+    active: Bool,
+    ?activeCondition: () -> Bool
 }
 
 class Selectable extends Component {
@@ -16,7 +18,7 @@ class Selectable extends Component {
     private function set_selected(selected: Bool): Bool {
         if(selected != this.selected) {
             outline.color = 0xFFFFFF;
-            parentEntity.layers.filter = selected ?  outline : null;
+            outline.enable = selected;
             this.selected = selected;
         }
         return selected;
@@ -30,5 +32,10 @@ class Selectable extends Component {
         portrait.dx = portraitOffset.x;
         portrait.dy = portraitOffset.y;
         outline = new h2d.filter.Outline(1, 0xFFFFFF, 0.3, true);
+        outline.enable = false;
+    }
+
+    private override function init() {
+        parentEntity.layers.filter = outline;
     }
 }

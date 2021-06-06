@@ -15,6 +15,8 @@ class Room extends hcb.Room {
     public static final width: Int = 960;
     public static final height: Int = 540;
 
+    public var playerController: Entity;
+
     public function new(level: LdtkLevelData.LdtkLevelData_Level) {
         super();
         this.level = level;
@@ -65,8 +67,12 @@ class Room extends hcb.Room {
         pathfindingGrid.addCollisionShapes(collisionWorld, "Static");
 
         // * Entities
-        var playerContollerEnt: Entity = new Entity(Prefabs.generatePlayerController());
-        addEntity(playerContollerEnt);
+        playerController = new Entity(Prefabs.generatePlayerController());
+        addEntity(playerController);
         LdtkEntities.ldtkAddEntities(this, cast level.l_Entities.getAllUntyped(), 0);
+    }
+
+    private override function onUpdate() {
+        ControlPanel.instance.update();
     }
 }

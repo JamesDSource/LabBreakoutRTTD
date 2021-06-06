@@ -11,6 +11,12 @@ class Main extends hxd.App {
     private override function init() {
         mouseHint = new h2d.Text(hxd.res.DefaultFont.get());
         mouseHint.textAlign = h2d.Text.Align.Center;
+        mouseHint.dropShadow = {
+            dx: -1,
+            dy: 1,
+            color: 0x000000,
+            alpha: 1
+        };
 
         ControlPanel.instance.build();
         Window.getInstance().displayMode = DisplayMode.Fullscreen;

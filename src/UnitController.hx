@@ -1,3 +1,5 @@
+import hxd.System;
+import hxd.Cursor;
 import hxd.Window;
 import hcb.comp.col.Collisions.CollisionInfo;
 import hcb.comp.col.*;
@@ -9,10 +11,11 @@ import VectorMath;
 enum ControllerMode {
     Select;
     Place;
+    Point;
 }
 
 class UnitController extends hcb.comp.Component {
-    private var mode: ControllerMode = ControllerMode.Select;
+    private var mode(default, set): ControllerMode = ControllerMode.Select;
 
     private var g: h2d.Graphics;
     private var selected: Array<Selectable> = [];
@@ -23,6 +26,24 @@ class UnitController extends hcb.comp.Component {
     private final dragThreshold: Int = 10;
 
     private var roomExt: Room = null;
+
+    private var pointCallback: (Array<CollisionShape>) -> Void = null;
+    private var pointTag: String = null;
+
+    private function set_mode(mode: ControllerMode): ControllerMode {
+        this.mode = mode;
+        var cursor: Cursor;
+        switch(mode) {
+            case ControllerMode.Select:
+                cursor = Cursor.Default;
+            case ControllerMode.Place:
+                cursor = Cursor.Hide;
+            case ControllerMode.Point:
+                cursor = Cursor.Button;
+        }
+        System.setCursor(cursor);
+        return mode;
+    }
 
     public override function init() {
         g = new h2d.Graphics();
@@ -39,21 +60,8 @@ class UnitController extends hcb.comp.Component {
             mousePos.y = Math.min(mousePos.y, roomExt.divider - 1);
             // ^ If dragging, clamp the mouse position to the divider
 
-        if(mousePos.y >= roomExt.divider) {
-            ControlPanel.instance.getMouseInputs(mousePos.x, mousePos.y);
-        }
-        else {
-            getSelectionInputs(mousePos);
-
-            if(Key.isPressed(Key.MOUSE_RIGHT)) {
-                for(selectedUnit in selected) {
-                    var movementComp: MoveableUnit = cast selectedUnit.parentEntity.getComponentOfType(MoveableUnit);
-                    if(movementComp != null) {
-                        movementComp.setTarget(mousePos);
-                    }
-                }
-            }
-        }
+        ControlPanel.instance.getMouseInputs(mousePos.x, mousePos.y);
+        stateMachine(mousePos, mousePos.y < roomExt.divider);
 
         if(Key.isPressed(Key.MOUSE_WHEEL_UP)) {
             ControlPanel.instance.offsetSelectedIndex(1);
@@ -77,6 +85,47 @@ class UnitController extends hcb.comp.Component {
             if(Key.isReleased(Key.MOUSE_LEFT)) {
                 selectionBounds = null;
             }
+        }
+    }
+
+    private function stateMachine(mousePos: Vec2, inBounds: Bool) {
+        switch(mode) {
+            case ControllerMode.Select:
+                if(pointCallback != null) {
+                    mode = ControllerMode.Point;
+                    return;
+                }
+
+                if(inBounds)
+                    getSelectionInputs(mousePos);
+
+                if(Key.isPressed(Key.MOUSE_RIGHT) && inBounds) {
+                    for(selectedUnit in selected) {
+                        var movementComp: MoveableUnit = cast selectedUnit.parentEntity.getComponentOfType(MoveableUnit);
+                        if(movementComp != null) {
+                            movementComp.setTarget(mousePos);
+                        }
+                    }
+                }
+            case ControllerMode.Place:
+            case ControllerMode.Point:
+                if(Key.isPressed(Key.ESCAPE)) {
+                    pointCallback = null;
+                }
+
+                if(pointCallback == null) {
+                    mode = ControllerMode.Select;
+                    return;
+                }            
+            
+                if(Key.isReleased(Key.MOUSE_LEFT) && inBounds) {
+                    var results: Array<CollisionShape> = [];
+                    roomExt.collisionWorld.getCollisionAt(mousePos, results, pointTag);
+                    pointCallback(results);
+                    pointCallback = null;
+                    pointTag = null;
+                    mode = ControllerMode.Select;
+                }
         }
     }
 
@@ -121,10 +170,7 @@ class UnitController extends hcb.comp.Component {
                 }
             }
 
-            if(selected.length > 0)
-                ControlPanel.instance.selected = selected;
-            else 
-                ControlPanel.instance.selected = null;
+            ControlPanel.instance.selected = selected.length > 0 ? selected : null;
         }
 
         // * On held
@@ -152,5 +198,10 @@ class UnitController extends hcb.comp.Component {
         }
 
         selected = [];
+    }
+
+    public function point(callBack: (Array<CollisionShape>) -> Void, ?tag: String) {
+        pointCallback = callBack;
+        pointTag = tag;
     }
 }

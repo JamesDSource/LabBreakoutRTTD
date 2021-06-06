@@ -9,7 +9,7 @@ typedef ActionButton = {
     bounds: Bounds,
     action: Action,
     frame: h2d.Bitmap,
-    outline: h2d.filter.Outline
+    outline: h2d.filter.Outline,
 }
 
 class ControlPanel extends Object {
@@ -32,9 +32,12 @@ class ControlPanel extends Object {
 
     private var actionsFrame: h2d.ScaleGrid;
     private var actionIconFrame: h2d.Tile;
-    private var selectedActions: h2d.Object;
     private final actionButtonMargin: Float = 8;
     private var actionButtons: Array<ActionButton> = [];
+    private var queryButtons: Array<ActionButton> = [];
+    private var selectedActions: h2d.Object;
+    private var queryActions: h2d.Object;
+    private var querying: (ActionButton) -> Void = null;
 
     private var gameInfoFrame: h2d.ScaleGrid;
 
@@ -73,40 +76,7 @@ class ControlPanel extends Object {
             portraitBmp.tile = selectedInst.portrait;
             selectedInst.outline.color = yellow;
 
-            var i: Int = 0;
-            for(action in selectedInst.actions) {
-                // * Centering the icon
-                var aiw: Float = action.icon.width;
-                var aih: Float = action.icon.height;
-                var pivotOffsets = hcb.Origin.getOriginOffset(hcb.Origin.OriginPoint.Center, vec2(aiw, aih));
-                action.icon.dx = pivotOffsets.x;
-                action.icon.dy = pivotOffsets.y;
-
-                // * Calculating the position
-                var pos: Vec2 = vec2(0, 0);
-                pos.x = actionButtonMargin + Math.floor(i/2)*(actionIconFrame.width + actionButtonMargin);
-                pos.y = actionsFrame.height/2 + (i%2 == 0 ? actionButtonMargin/2 : -(actionButtonMargin/2 + actionIconFrame.height));
-
-                // * Adding the frame and icon
-                var frame: h2d.Bitmap = new h2d.Bitmap(actionIconFrame, selectedActions);
-                frame.x = pos.x;
-                frame.y = pos.y;
-                var icon: h2d.Bitmap = new h2d.Bitmap(action.icon, frame);
-                icon.x = frame.tile.width/2;
-                icon.y = frame.tile.height/2;
-                frame.filter = new h2d.filter.Outline(0, 0xFFFFFF);
-                
-                frame.syncPos();
-                var frameAbsPos = frame.getAbsPos();
-                var framePos: Vec2 = vec2(frameAbsPos.x, frameAbsPos.y);
-                var bounds: Bounds = {
-                    min: framePos,
-                    max: framePos + vec2(frame.tile.width, frame.tile.height)
-                }
-
-                actionButtons.push({bounds: bounds, action: action, frame: frame, outline: cast frame.filter});
-                i++;
-            }
+            convertActionsToButtons(selectedInst.actions, selectedActions, actionButtons);
         }
 
         return selectedInst;
@@ -157,6 +127,7 @@ class ControlPanel extends Object {
         xPos += actionsFrame.width;
 
         selectedActions = new h2d.Object(actionsFrame);
+        queryActions = new h2d.Object(actionsFrame);
 
         // * Game info
         gameInfoFrame = new h2d.ScaleGrid(frameTile, 8, 8, 8, this);
@@ -184,21 +155,105 @@ class ControlPanel extends Object {
         return selectedIndex;
     }
 
-    public function getMouseInputs(mouseX: Float, mouseY: Float) {
+    public function update() {
         for(button in actionButtons) {
+            var icon: h2d.Bitmap = cast button.frame.getChildAt(0);
+            var shader = icon.getShader(shader.GreyShader);
+            if(button.action.activeCondition == null || button.action.activeCondition()) {
+                button.action.active = true;
+                shader.active = 0;
+            }
+            else {
+                button.action.active = false;
+                shader.active = 1;
+            }
+        }
+    }
+
+    public function getMouseInputs(mouseX: Float, mouseY: Float) {
+        Main.mouseHint.text = "";
+
+        var buttonsChecking: Array<ActionButton> = querying == null ? actionButtons : queryButtons;
+
+        for(button in buttonsChecking) {
             var inBounds: Bool = Collisions.pointInAABB(vec2(mouseX, mouseY), button.bounds.min, button.bounds.max);
             
             button.outline.color = 0xFFFFFF;
-            if(inBounds) {
+            if(inBounds && button.action.active) {
                 button.outline.size = 1;
+                Main.mouseHint.text = button.action.name;
 
                 if(hxd.Key.isDown(hxd.Key.MOUSE_LEFT)) {
                     button.outline.color = yellow;
+                }
+
+                if(hxd.Key.isReleased(hxd.Key.MOUSE_LEFT)) {
+                    if(querying == null) {
+                        button.action.callBack();
+                    }
+                    else {
+                        querying(button);
+                        querying = null;
+                        queryActions.removeChildren();
+                        queryButtons = [];
+                        queryActions.visible = false;
+                        selectedActions.visible = true;
+                    }
                 }
             }
             else {
                 button.outline.size = 0;
             }
+        }
+    }
+
+    public function query(actions: Array<Action>, callBack: (ActionButton) -> Void) {
+        if(querying == null) {
+            convertActionsToButtons(actions, queryActions, queryButtons);
+            selectedActions.visible = false;
+            queryActions.visible = true;
+            querying = callBack;
+        }
+    }
+
+    private function convertActionsToButtons(actions: Array<Action>, parent: h2d.Object, addTo: Array<ActionButton>) {
+        var i: Int = 0;
+        for(action in actions) {
+            // * Centering the icon
+            var aiw: Float = action.icon.width;
+            var aih: Float = action.icon.height;
+            var pivotOffsets = hcb.Origin.getOriginOffset(hcb.Origin.OriginPoint.Center, vec2(aiw, aih));
+            action.icon.dx = pivotOffsets.x;
+            action.icon.dy = pivotOffsets.y;
+
+            // * Calculating the position
+            var pos: Vec2 = vec2(0, 0);
+            pos.x = actionButtonMargin + Math.floor(i/2)*(actionIconFrame.width + actionButtonMargin);
+            pos.y = actionsFrame.height/2 + (i%2 == 0 ? -(actionButtonMargin/2 + actionIconFrame.height) : actionButtonMargin/2);
+
+            // * Adding the frame and icon
+            var frame: h2d.Bitmap = new h2d.Bitmap(actionIconFrame, parent);
+            frame.x = pos.x;
+            frame.y = pos.y;
+            var icon: h2d.Bitmap = new h2d.Bitmap(action.icon, frame);
+            icon.x = frame.tile.width/2;
+            icon.y = frame.tile.height/2;
+            frame.filter = new h2d.filter.Outline(0, 0xFFFFFF);
+            
+            var greyShader = new shader.GreyShader();
+            greyShader.active = 0;
+            icon.addShader(greyShader);
+            
+            frame.syncPos();
+            var frameAbsPos = frame.getAbsPos();
+            var framePos: Vec2 = vec2(frameAbsPos.x, frameAbsPos.y);
+            var bounds: Bounds = {
+                min: framePos,
+                max: framePos + vec2(frame.tile.width, frame.tile.height)
+            }
+
+            addTo.push({bounds: bounds, action: action, frame: frame, outline: cast frame.filter});
+            i++;
         }
     }
 }
