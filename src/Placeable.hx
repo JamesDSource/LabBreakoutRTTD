@@ -1,28 +1,20 @@
 import hcb.comp.col.Collisions.CollisionInfo;
-import shader.BuildingShader;
 import hcb.comp.col.CollisionShape;
 import hcb.comp.Component;
 import VectorMath;
 
 class Placeable extends Component {
     private var placed(default, set): Bool = false;
+    private var canPlace: Bool = false;
     private var collisionShape: CollisionShape;
-    private var shader: shader.BuildingShader;
-    private var drawables: Array<h2d.Drawable> = [];
-
-    public static final blue = new hxsl.Types.Vec(0.1, 0.1, 0.9);
-    public static final red = new hxsl.Types.Vec(0.9, 0.1, 0.1);
 
     public var placementCanceled: () -> Void = null;
+    public var onPlaced: (Vec2) -> Void = null;
 
     private function set_placed(placed: Bool): Bool {
         if(this.placed != placed) {
-            for(drawable in drawables) {
-                if(placed)
-                    drawable.removeShader(shader);
-                else if(drawable.getShader(BuildingShader) == null) 
-                    drawable.addShader(shader);
-            }
+            parentEntity.layer = placed ? 0 : 2;
+            parentEntity.parentOverride = placed ? null : room.scene;
         }
 
         this.placed = placed;
@@ -35,12 +27,9 @@ class Placeable extends Component {
         super(name);
         this.collisionShape = collisionShape;
         collisionShape.tags.push("Building");
-        shader = new shader.BuildingShader();
     }
 
     private override function update() {
-        shader.offset += 0.1;
-
         parentEntity.moveTo(vec2(room.scene.mouseX, room.scene.mouseY));
 
         var colliding: Array<CollisionInfo> = []; 
@@ -48,24 +37,33 @@ class Placeable extends Component {
         room.collisionWorld.getCollisionAt(collisionShape, colliding, "Static");
         var isColliding: Bool = colliding.length > 0;
 
-        shader.color = isColliding ? red : blue;
+        canPlace = !isColliding;
+    }
+
+    private override function addedToRoom() {
+        parentEntity.layer = 2;
+        parentEntity.parentOverride = room.scene;
     }
 
     private override function removedFromRoom() {
         placementCanceled();
     }
 
+    public function placeAttempt(): Bool {
+        if(!canPlace)
+            return false;
+
+        placed = true;
+        onPlaced(parentEntity.getPosition());
+        return true;
+    }
+
     public function isPlaced(): Bool {
         return placed;
     }
 
-    public function addDrawable(d: h2d.Drawable) {
-        d.addShader(shader);
-        drawables.push(d);
+    public function canBePlaced(): Bool {
+        return canPlace;
     }
-
-    public function removeDrawable(d: h2d.Drawable): Bool {
-        d.removeShader(shader);
-        return drawables.remove(d);
-    }
+ 
 }

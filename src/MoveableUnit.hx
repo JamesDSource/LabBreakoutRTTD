@@ -122,5 +122,5 @@ class MoveableUnit extends Component {
 
     public function getTarget(): Vec2 {
         return target == null ? null : target.clone();
-    }
+    }     
 }

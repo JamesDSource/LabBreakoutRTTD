@@ -6,7 +6,8 @@ typedef Action = {
     icon: h2d.Tile,
     callBack: () -> Void,
     active: Bool,
-    ?activeCondition: () -> Bool
+    ?activeCondition: () -> Bool,
+    ?inactiveText: () -> String
 }
 
 class Selectable extends Component {

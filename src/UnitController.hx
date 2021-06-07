@@ -1,6 +1,6 @@
+import hcb.Entity;
 import hxd.System;
 import hxd.Cursor;
-import hxd.Window;
 import hcb.comp.col.Collisions.CollisionInfo;
 import hcb.comp.col.*;
 import hcb.comp.col.CollisionShape.Bounds;
@@ -27,8 +27,12 @@ class UnitController extends hcb.comp.Component {
 
     private var roomExt: Room = null;
 
+    private var placeable: Placeable = null;
+
     private var pointCallback: (Array<CollisionShape>) -> Void = null;
     private var pointTag: String = null;
+
+    private var moveToEventListeners: Map<Entity, (Array<CollisionShape>, Vec2) -> Void> = [];
 
     private function set_mode(mode: ControllerMode): ControllerMode {
         this.mode = mode;
@@ -91,6 +95,11 @@ class UnitController extends hcb.comp.Component {
     private function stateMachine(mousePos: Vec2, inBounds: Bool) {
         switch(mode) {
             case ControllerMode.Select:
+                if(placeable != null) {
+                    mode = ControllerMode.Place;
+                    return;
+                }
+
                 if(pointCallback != null) {
                     mode = ControllerMode.Point;
                     return;
@@ -100,14 +109,43 @@ class UnitController extends hcb.comp.Component {
                     getSelectionInputs(mousePos);
 
                 if(Key.isPressed(Key.MOUSE_RIGHT) && inBounds) {
+                    var results: Array<CollisionShape> = [];
+                    room.collisionWorld.getCollisionAt(mousePos, results);
                     for(selectedUnit in selected) {
                         var movementComp: MoveableUnit = cast selectedUnit.parentEntity.getComponentOfType(MoveableUnit);
                         if(movementComp != null) {
                             movementComp.setTarget(mousePos);
+                            moveToEventCall(selectedUnit.parentEntity, results, mousePos);
                         }
                     }
                 }
+
             case ControllerMode.Place:
+                if(Key.isPressed(Key.ESCAPE)) {
+                    room.removeEntity(placeable.parentEntity);
+                    placeable = null;
+                }
+
+                if(placeable == null) {
+                    mode = ControllerMode.Select;
+                    return;
+                }
+
+                if(pointCallback != null) {
+                    room.removeEntity(placeable.parentEntity);
+                    placeable = null;
+                    mode = ControllerMode.Point;
+                    return;
+                }
+
+                if(Key.isReleased(Key.MOUSE_LEFT) && inBounds) {
+                    if(placeable.placeAttempt()) {
+                        placeable = null;
+                        mode = ControllerMode.Select;
+                        return;
+                    }
+                }
+                
             case ControllerMode.Point:
                 if(Key.isPressed(Key.ESCAPE)) {
                     pointCallback = null;
@@ -116,7 +154,13 @@ class UnitController extends hcb.comp.Component {
                 if(pointCallback == null) {
                     mode = ControllerMode.Select;
                     return;
-                }            
+                }
+                
+                if(placeable != null) {
+                    pointCallback = null;
+                    mode = ControllerMode.Place;
+                    return;
+                }
             
                 if(Key.isReleased(Key.MOUSE_LEFT) && inBounds) {
                     var results: Array<CollisionShape> = [];
@@ -203,5 +247,25 @@ class UnitController extends hcb.comp.Component {
     public function point(callBack: (Array<CollisionShape>) -> Void, ?tag: String) {
         pointCallback = callBack;
         pointTag = tag;
+    }
+
+    public function setPlaceable(ent: hcb.Entity) {
+        var comp: Placeable = cast ent.getComponentOfType(Placeable);
+        if(comp != null) {
+            placeable = comp;
+        }
+    }
+
+    public function moveToEventSubscribe(ent: Entity, callBack: (Array<CollisionShape>, Vec2) -> Void) {
+        moveToEventListeners[ent] = callBack;
+    }
+
+    public function moveToEventRemove(ent: Entity): Bool {
+        return moveToEventListeners.remove(ent);
+    }
+
+    private function moveToEventCall(ent: Entity, result: Array<CollisionShape>, pos: Vec2) {
+        if(moveToEventListeners.exists(ent))
+            moveToEventListeners[ent](result.copy(), pos.clone());
     }
 }

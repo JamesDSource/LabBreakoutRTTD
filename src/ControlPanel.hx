@@ -1,3 +1,4 @@
+import building.BuildingPrefabs;
 import hcb.comp.col.Collisions;
 import Selectable.Action;
 import hcb.comp.col.CollisionShape.Bounds;
@@ -10,9 +11,16 @@ typedef ActionButton = {
     action: Action,
     frame: h2d.Bitmap,
     outline: h2d.filter.Outline,
+    ?back: Bool
+}
+
+typedef BackAction = {
+    > Action,
 }
 
 class ControlPanel extends Object {
+    public var metals(default, set): Int = 20;
+
     public static final guiHeight: Float = 96;
 
     private var font: h2d.Font;
@@ -40,8 +48,15 @@ class ControlPanel extends Object {
     private var querying: (ActionButton) -> Void = null;
 
     private var gameInfoFrame: h2d.ScaleGrid;
+    private var reconditeCounter: h2d.Text;
 
     public static final instance: ControlPanel = new ControlPanel();
+
+    private function set_metals(metals: Int): Int {
+        this.metals = metals;
+        reconditeCounter.text = 'Recondite: $metals';
+        return metals;
+    }
 
     private function set_selected(selected: Array<Selectable>): Array<Selectable> {
         this.selected = selected;
@@ -134,6 +149,14 @@ class ControlPanel extends Object {
         gameInfoFrame.x = xPos;
         gameInfoFrame.height = guiHeight;
         gameInfoFrame.width = Room.width - xPos;
+
+        var infoTextMargin: Float = 15;
+        var infoTextPos: Float = 5;
+        reconditeCounter = new h2d.Text(font, gameInfoFrame);
+        reconditeCounter.textAlign = h2d.Text.Align.Left;
+        reconditeCounter.x = infoTextMargin;
+        reconditeCounter.y = infoTextPos;
+        reconditeCounter.text = 'Recondite: $metals';
     }
 
     public function offsetSelectedIndex(offset: Int) {
@@ -156,7 +179,8 @@ class ControlPanel extends Object {
     }
 
     public function update() {
-        for(button in actionButtons) {
+        var buttonsChecking: Array<ActionButton> = querying == null ? actionButtons : queryButtons;
+        for(button in buttonsChecking) {
             var icon: h2d.Bitmap = cast button.frame.getChildAt(0);
             var shader = icon.getShader(shader.GreyShader);
             if(button.action.activeCondition == null || button.action.activeCondition()) {
@@ -172,8 +196,17 @@ class ControlPanel extends Object {
 
     public function getMouseInputs(mouseX: Float, mouseY: Float) {
         Main.mouseHint.text = "";
+        Main.mouseHint.color = new h3d.Vector(1.0, 1.0, 1.0);
 
         var buttonsChecking: Array<ActionButton> = querying == null ? actionButtons : queryButtons;
+
+        if(querying != null && hxd.Key.isPressed(hxd.Key.ESCAPE)) {
+            querying = null;
+            queryActions.removeChildren();
+            queryButtons = [];
+            queryActions.visible = false;
+            selectedActions.visible = true;
+        }
 
         for(button in buttonsChecking) {
             var inBounds: Bool = Collisions.pointInAABB(vec2(mouseX, mouseY), button.bounds.min, button.bounds.max);
@@ -192,7 +225,10 @@ class ControlPanel extends Object {
                         button.action.callBack();
                     }
                     else {
-                        querying(button);
+                        if(button.back == null || !button.back) {
+                            querying(button);
+                        }
+                        
                         querying = null;
                         queryActions.removeChildren();
                         queryButtons = [];
@@ -202,6 +238,11 @@ class ControlPanel extends Object {
                 }
             }
             else {
+                if(inBounds && button.action.inactiveText != null) {
+                    Main.mouseHint.color = new h3d.Vector(1.0, 0.0, 0.0);
+                    Main.mouseHint.text = button.action.inactiveText();
+                }
+
                 button.outline.size = 0;
             }
         }
@@ -209,11 +250,43 @@ class ControlPanel extends Object {
 
     public function query(actions: Array<Action>, callBack: (ActionButton) -> Void) {
         if(querying == null) {
-            convertActionsToButtons(actions, queryActions, queryButtons);
+            var tempActions = actions.copy();
+            tempActions.resize(Std.int(Math.min(tempActions.length, 17)));
+            var backAction: BackAction = {
+                name: "Back",
+                icon: Res.RemoveActionIcon.toTile(),
+                callBack: () -> {},
+                active: true
+            }
+            tempActions.push(backAction);
+            convertActionsToButtons(tempActions, queryActions, queryButtons);
+            queryButtons[queryButtons.length - 1].back = true;
             selectedActions.visible = false;
             queryActions.visible = true;
             querying = callBack;
         }
+    }
+
+    public function queryBuildings(callBack: (ActionButton) -> Void) {
+        var actions: Array<Action> = [];
+        for(data in BuildingPrefabs.buildingData) {
+            var buildingAction: BuildingAction = {
+                name: '${data.name}\n${data.cost}RE',
+                icon: Res.RemoveActionIcon.toTile(),
+                callBack: () -> {},
+                active: true,
+                activeCondition: () -> {
+                    return ControlPanel.instance.metals >= data.cost;
+                },
+                inactiveText: () -> 'Not Enought Money!\nNeed: ${data.cost}RE',
+                cost: data.cost,
+                prefab: data.entityPrefab
+            }
+
+            actions.push(buildingAction);
+        }
+
+        query(actions, callBack);
     }
 
     private function convertActionsToButtons(actions: Array<Action>, parent: h2d.Object, addTo: Array<ActionButton>) {

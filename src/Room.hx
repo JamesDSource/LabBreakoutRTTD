@@ -44,7 +44,7 @@ class Room extends hcb.Room {
         var panel = ControlPanel.instance;
         panel.x = view.pixelX;
         panel.y = divider;
-        drawTo.add(panel, 1);
+        scene.add(panel, 1);
 
         // * Collisions
         var indexGrid: hcb.IndexGrid.IGrid = hcb.IndexGrid.ldtkTilesConvert(level.l_Collisions);
