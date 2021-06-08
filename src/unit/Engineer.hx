@@ -1,5 +1,6 @@
 package unit;
 
+import haxe.extern.Rest;
 import hcb.comp.col.CollisionShape;
 import VectorMath.distance;
 import building.Building;
@@ -8,7 +9,7 @@ import building.BuildingPrefabs;
 import hcb.Entity;
 import hxd.Res;
 
-enum State {
+enum EngineerState {
     Idle;
     Build;
     Repair;
@@ -16,7 +17,9 @@ enum State {
 }
 
 class Engineer extends Unit {
-    private var state: State = State.Idle;
+    public static var fucknuggets: Int = 5;
+
+    private var state: EngineerState = EngineerState.Idle;
     private var buildSpeed: Float = 0.01;
 
     public var buildEnt(default, set): Entity = null;
@@ -33,7 +36,7 @@ class Engineer extends Unit {
             this.buildEnt = buildEnt;
             buildBuilding = buildingComp;
             movement.setTarget(buildEnt.getPosition());
-            state = State.Build;
+            state = EngineerState.Build;
         }
         return this.buildEnt;
     }
@@ -55,7 +58,7 @@ class Engineer extends Unit {
         });
         selectable.actions.push({
             name: "Remove",
-            icon: Res.RemoveActionIcon.toTile(),
+            icon: Res.TexturePack.get("DeconstructActionIcon"),
             callBack: removeCallback,
             active: true
         });
@@ -73,10 +76,10 @@ class Engineer extends Unit {
 
     private function stateMachine() {
         switch(state) {
-            case State.Idle:
-            case State.Build:
+            case EngineerState.Idle:
+            case EngineerState.Build:
                 if(!room.hasEntity(buildEnt)) {
-                    state = State.Idle;
+                    state = EngineerState.Idle;
                     return;
                 }
 
@@ -84,10 +87,23 @@ class Engineer extends Unit {
                 if(d < 16) {
                     buildBuilding.addProgress(buildSpeed);
                     if(buildBuilding.isDone())
-                        state = State.Idle;
+                        state = EngineerState.Idle;
                 }
-            case State.Repair:
-            case State.Destroy:
+            case EngineerState.Repair:
+            case EngineerState.Destroy:
+                if(!room.hasEntity(destroyEnt)) {
+                    state = EngineerState.Idle;
+                    return;
+                }
+
+                var d = distance(parentEntity.getPosition(), destroyEnt.getPosition());
+                if(d < 16) {
+                    room.removeEntity(destroyEnt);
+                    var buidlingComp: Building = cast destroyEnt.getComponentOfType(Building);
+                    ControlPanel.instance.metals += buidlingComp.cost;
+                    destroyEnt = null;
+                    state = EngineerState.Idle;
+                }
         }
     }
 
@@ -95,7 +111,7 @@ class Engineer extends Unit {
         ControlPanel.instance.queryBuildings(
             (b: ActionButton) -> {
                 var buildingAction: BuildingAction = cast b.action;
-                var buildingEnt: Entity = new Entity(buildingAction.prefab(buildingAction.cost));
+                var buildingEnt: Entity = new Entity(buildingAction.prefab(buildingAction.cost), 1);
                 room.addEntity(buildingEnt);
                 unitController.setPlaceable(buildingEnt);
                 ControlPanel.instance.metals -= buildingAction.cost;
@@ -111,11 +127,25 @@ class Engineer extends Unit {
     }
 
     private function removeCallback() {
-        unitController.point((a) -> trace(a.length));
+        unitController.point(
+            (results) ->  {
+                for(result in results) {
+                    if(result.parentEntity == null)
+                        continue;
+
+                    if(result.parentEntity.getComponentOfType(Building) != null) {
+                        destroyEnt = result.parentEntity;
+                        movement.setTarget(destroyEnt.getPosition());
+                        state = EngineerState.Destroy;
+                    }
+
+                }
+            }
+        );
     }
 
     private function onMoveTo(results: Array<CollisionShape>, pos: Vec2) {
-        state = State.Idle;
+        state = EngineerState.Idle;
         for(result in results) {
             if(result.parentEntity == null)
                 continue;

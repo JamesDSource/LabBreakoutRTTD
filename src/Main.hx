@@ -1,3 +1,4 @@
+import building.BuildingPrefabs;
 import hxd.Window;
 import hcb.LdtkEntities;
 import hcb.Project;
@@ -9,6 +10,8 @@ class Main extends hxd.App {
     public static var mouseHint: h2d.Text;
 
     private override function init() {
+        BuildingPrefabs.initBuildingData();
+
         mouseHint = new h2d.Text(hxd.res.DefaultFont.get());
         mouseHint.textAlign = h2d.Text.Align.Center;
         mouseHint.dropShadow = {
@@ -41,12 +44,13 @@ class Main extends hxd.App {
         mouseHint.y = project.room.scene.mouseY;
     }
 
-    // * Loading assets by generating a pak file
-    private override function loadAssets(onLoad: () -> Void) {
-        cherry.tools.ResTools.initPakAuto(onLoad, (p) -> trace(p));
-    }
+    //// * Loading assets by generating a pak file
+    //private override function loadAssets(onLoad: () -> Void) {
+    //    cherry.tools.ResTools.initPakAuto(onLoad, (p) -> trace(p));
+    //}
 
     public static function main() {
+        hxd.Res.initLocal();
         new Main();
     }
 }

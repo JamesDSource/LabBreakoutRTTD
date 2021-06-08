@@ -14,7 +14,7 @@ class MoveableUnit extends Component {
     private var pathfindingGrid: PathfindingGrid = null;
     private var navigation: Navigation;
     private final closeEnough: Float = 1.5;
-    private final closeEnoughTarget: Float = 10;
+    private final closeEnoughTarget: Float = 6;
 
     private var target: Vec2 = null;
     private var path: Array<Vec2> = null;
@@ -28,7 +28,7 @@ class MoveableUnit extends Component {
 
     private var collider: CollisionShape;
 
-    public function new(name: String, movementSpeed: Float = 2, detectionRadius: Float = 25, ?collider: CollisionShape) {
+    public function new(name: String, movementSpeed: Float = 2, detectionRadius: Float = 16, ?collider: CollisionShape) {
         super(name);
         this.movementSpeed = movementSpeed;
         this.detectionRadius = detectionRadius;
@@ -112,7 +112,7 @@ class MoveableUnit extends Component {
         }
         else {
             this.target = target.clone();            
-            path = navigation.getPathTo(pathfindingGrid, target, false);
+            path = navigation.getPathTo(pathfindingGrid, target, true);
             stopped = false;
         }
 

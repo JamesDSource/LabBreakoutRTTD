@@ -3,7 +3,7 @@ package building;
 import hcb.comp.Component;
 
 class Building extends Component {
-    private var cost: Int = 0;
+    public var cost(default, null): Int;
     private var placeable: Placeable;
 
     private var shader: shader.BuildingShader;

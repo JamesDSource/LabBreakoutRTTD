@@ -36,7 +36,7 @@ class ControlPanel extends Object {
     private var portraitBmp: h2d.Bitmap;
 
     private var descriptionFrame: h2d.ScaleGrid;
-    private var nameTxt: h2d.Text;
+    private var descriptionText: h2d.Text;
 
     private var actionsFrame: h2d.ScaleGrid;
     private var actionIconFrame: h2d.Tile;
@@ -83,11 +83,9 @@ class ControlPanel extends Object {
         
         this.selectedInst = selectedInst;
         if(selectedInst == null) {
-            nameTxt.text = "";
             portraitBmp.tile = null;
         }
         else {
-            nameTxt.text = selectedInst.name;
             portraitBmp.tile = selectedInst.portrait;
             selectedInst.outline.color = yellow;
 
@@ -103,7 +101,7 @@ class ControlPanel extends Object {
 
     public function build() {
         font = hxd.res.DefaultFont.get();
-        var frameTile: h2d.Tile = Res.Frame.toTile();
+        var frameTile: h2d.Tile = Res.TexturePack.get("Frame");
         actionIconFrame = Res.TexturePack.get("ActionIconFrame");
         
         var xPos: Float = 0;
@@ -130,9 +128,9 @@ class ControlPanel extends Object {
         descriptionFrame.height = guiHeight;
         xPos += descriptionFrame.width;
 
-        nameTxt = new h2d.Text(font, descriptionFrame);
-        nameTxt.textAlign = h2d.Text.Align.Left;
-        nameTxt.x = selectedTxt.y = 3;
+        descriptionText = new h2d.Text(font, descriptionFrame);
+        descriptionText.textAlign = h2d.Text.Align.Left;
+        descriptionText.x = selectedTxt.y = 3;
 
         // * Actions
         actionsFrame = new h2d.ScaleGrid(frameTile, 8, 8, 8, this);
@@ -192,6 +190,17 @@ class ControlPanel extends Object {
                 shader.active = 1;
             }
         }
+
+        // * Building the description text
+        var descText: String = "";
+        if(selectedInst != null) {
+            descText += '${selectedInst.name}\n${selectedInst.status}\n';
+            var health: Health = cast selectedInst.parentEntity.getComponentOfType(Health);
+            if(health != null) {
+                descText += '${health.hp}/${health.maxHp} Hit Points\n';
+            }
+        }
+        descriptionText.text = descText;
     }
 
     public function getMouseInputs(mouseX: Float, mouseY: Float) {
@@ -254,7 +263,7 @@ class ControlPanel extends Object {
             tempActions.resize(Std.int(Math.min(tempActions.length, 17)));
             var backAction: BackAction = {
                 name: "Back",
-                icon: Res.RemoveActionIcon.toTile(),
+                icon: Res.TexturePack.get("RemoveActionIcon"),
                 callBack: () -> {},
                 active: true
             }
@@ -272,7 +281,7 @@ class ControlPanel extends Object {
         for(data in BuildingPrefabs.buildingData) {
             var buildingAction: BuildingAction = {
                 name: '${data.name}\n${data.cost}RE',
-                icon: Res.RemoveActionIcon.toTile(),
+                icon: data.icon,
                 callBack: () -> {},
                 active: true,
                 activeCondition: () -> {

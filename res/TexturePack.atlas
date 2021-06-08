@@ -1,6 +1,6 @@
 
 TexturePack.png
-size: 512, 64
+size: 1024, 64
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
@@ -13,14 +13,35 @@ ActionIconFrame
   index: -1
 BuildActionIcon
   rotate: false
-  xy: 344, 17
+  xy: 500, 32
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
+DeconstructActionIcon
+  rotate: false
+  xy: 372, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+DefenseActionIcon
+  rotate: false
+  xy: 564, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+EngineerDead
+  rotate: false
+  xy: 716, 49
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
 EngineerIdle
   rotate: false
-  xy: 372, 49
+  xy: 286, 4
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
@@ -46,16 +67,58 @@ EngineerRun
   orig: 60, 15
   offset: 0, 0
   index: -1
-RepairActionIcon
+FightActionIcon
   rotate: false
-  xy: 312, 17
+  xy: 596, 32
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
+Frame
+  rotate: false
+  xy: 660, 40
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+HealActionIcon
+  rotate: false
+  xy: 404, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+RemoveActionIcon
+  rotate: false
+  xy: 468, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+RepairActionIcon
+  rotate: false
+  xy: 436, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+ResearchActionIcon
+  rotate: false
+  xy: 628, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+ScientistDead
+  rotate: false
+  xy: 286, 19
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
 ScientistIdle
   rotate: false
-  xy: 226, 4
+  xy: 731, 49
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
@@ -81,9 +144,30 @@ ScientistRun
   orig: 60, 15
   offset: 0, 0
   index: -1
+SentryIcon
+  rotate: false
+  xy: 532, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+SoldierAttack
+  rotate: false
+  xy: 226, 4
+  size: 45, 15
+  orig: 45, 15
+  offset: 0, 0
+  index: -1
+SoldierDead
+  rotate: false
+  xy: 271, 4
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
 SoldierIdle
   rotate: false
-  xy: 286, 19
+  xy: 746, 49
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
@@ -107,5 +191,26 @@ SoldierRun
   xy: 252, 34
   size: 60, 15
   orig: 60, 15
+  offset: 0, 0
+  index: -1
+StandardTurretBase
+  rotate: false
+  xy: 352, 33
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+StandardTurretGun
+  rotate: false
+  xy: 684, 50
+  size: 32, 14
+  orig: 32, 14
+  offset: 0, 0
+  index: -1
+WolfRun
+  rotate: false
+  xy: 312, 23
+  size: 40, 26
+  orig: 40, 26
   offset: 0, 0
   index: -1

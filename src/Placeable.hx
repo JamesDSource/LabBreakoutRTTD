@@ -11,9 +11,11 @@ class Placeable extends Component {
     public var placementCanceled: () -> Void = null;
     public var onPlaced: (Vec2) -> Void = null;
 
+    private var prevLayer: Int;
+
     private function set_placed(placed: Bool): Bool {
         if(this.placed != placed) {
-            parentEntity.layer = placed ? 0 : 2;
+            parentEntity.layer = placed ? prevLayer : 2;
             parentEntity.parentOverride = placed ? null : room.scene;
         }
 
@@ -27,6 +29,10 @@ class Placeable extends Component {
         super(name);
         this.collisionShape = collisionShape;
         collisionShape.tags.push("Building");
+    }
+
+    private override function init() {
+        prevLayer = parentEntity.layer;
     }
 
     private override function update() {
@@ -46,7 +52,8 @@ class Placeable extends Component {
     }
 
     private override function removedFromRoom() {
-        placementCanceled();
+        if(!placed)
+            placementCanceled();
     }
 
     public function placeAttempt(): Bool {

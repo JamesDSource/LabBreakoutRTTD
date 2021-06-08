@@ -16,6 +16,8 @@ class Selectable extends Component {
     public var outline: h2d.filter.Outline;
     public var actions: Array<Action> = [];
 
+    public var status: String = "Default status";
+
     private function set_selected(selected: Bool): Bool {
         if(selected != this.selected) {
             outline.color = 0xFFFFFF;

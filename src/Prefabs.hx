@@ -1,4 +1,5 @@
 import unit.*;
+import enemy.*;
 import hcb.comp.anim.AnimationPlayer;
 import hxd.Res;
 import hcb.Origin.OriginPoint;
@@ -52,6 +53,18 @@ class Prefabs {
             new MoveableUnit("Move", col),
             new Health("Health"),
             new AnimationPlayer("Animation Player")
+        ];
+    }
+
+    public static function generateWolf(): Array<Component> {
+        var wolfComp = new Wolf("Wolf");
+        var health = new Health("Hp", 40);
+        var movement = new MoveableUnit("Move", 2.5);
+        
+        return [
+            wolfComp,
+            health,
+            movement
         ];
     }
 }
