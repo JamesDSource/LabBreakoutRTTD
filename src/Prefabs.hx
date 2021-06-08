@@ -59,12 +59,16 @@ class Prefabs {
     public static function generateWolf(): Array<Component> {
         var wolfComp = new Wolf("Wolf");
         var health = new Health("Hp", 40);
+        var navigation = new Navigation("Navi");
         var movement = new MoveableUnit("Move", 2.5);
+        var animationPlayer = new AnimationPlayer("AnimationPlayer");
         
         return [
             wolfComp,
             health,
-            movement
+            navigation,
+            movement,
+            animationPlayer
         ];
     }
 }

@@ -46,7 +46,7 @@ class Sentry extends Component {
             
             if(target == null) {
                 var results: Array<CollisionInfo> = [];
-                room.collisionWorld.getCollisionAt(detectionShape, results, "Enemy");
+                room.collisionWorld.getCollisionAt(detectionShape, results, parentEntity.getPosition(), "Enemy");
 
                 for(result in results) {
                     var rayCast: Raycast = {

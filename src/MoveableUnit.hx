@@ -111,7 +111,7 @@ class MoveableUnit extends Component {
             stopped = true;
         }
         else {
-            this.target = target.clone();            
+            this.target = target.clone();
             path = navigation.getPathTo(pathfindingGrid, target, true);
             stopped = false;
         }

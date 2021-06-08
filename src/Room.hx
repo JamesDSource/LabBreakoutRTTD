@@ -70,6 +70,9 @@ class Room extends hcb.Room {
         playerController = new Entity(Prefabs.generatePlayerController());
         addEntity(playerController);
         LdtkEntities.ldtkAddEntities(this, cast level.l_Entities.getAllUntyped(), 1);
+
+        var wolf = new Entity(Prefabs.generateWolf(), vec2(300, 200));
+        addEntity(wolf);
     }
 
     private override function onUpdate() {
