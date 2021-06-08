@@ -34,7 +34,7 @@ class Sentry extends Component {
         building.addDrawable(base.bitmap);
         building.addDrawable(gun);
 
-        detectionShape = new CollisionCircle("Detection", 10);
+        detectionShape = new CollisionCircle("Detection", 128);
     }
 
     private override function addedToRoom() {

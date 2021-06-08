@@ -3,12 +3,12 @@ package enemy;
 import hcb.math.Vector;
 import hcb.Origin.OriginPoint;
 import hxd.Res;
-import hcb.comp.anim.*;
-import hcb.comp.col.Collisions.Raycast;
-import hcb.comp.col.Collisions.CollisionInfo;
 import unit.Unit;
 import hcb.Entity;
-import hcb.comp.col.CollisionCircle;
+import hcb.comp.anim.*;
+import hcb.comp.col.*;
+import hcb.comp.col.Collisions.Raycast;
+import hcb.comp.col.Collisions.CollisionInfo;
 import VectorMath;
 
 enum WolfState {
@@ -26,6 +26,8 @@ class Wolf extends Enemy {
 
     private var animationPlayer: AnimationPlayer;
     private var runAnimation: Animation;
+
+    private var collisionBox: CollisionPolygon;
 
     private function set_state(state: WolfState): WolfState {
 
@@ -47,6 +49,8 @@ class Wolf extends Enemy {
 
         runAnimation = new Animation(Res.TexturePack.get("WolfRun"), 4, OriginPoint.Center);
         animationPlayer.addAnimationSlot("Main", 0, runAnimation);
+
+        collisionBox = cast parentEntity.getComponentOfType(CollisionPolygon);
     }
 
     private override function update() {
@@ -99,5 +103,6 @@ class Wolf extends Enemy {
     private function onMove(to: Vec2, from: Vec2) {
         var ang = Vector.getAngle(to - from);
         runAnimation.rotation = hxd.Math.degToRad(ang);
+        collisionBox.rotation = ang;
     }
 }

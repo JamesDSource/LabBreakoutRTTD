@@ -1,3 +1,4 @@
+import hcb.comp.anim.Animation;
 import unit.*;
 import enemy.*;
 import hcb.comp.anim.AnimationPlayer;
@@ -62,13 +63,38 @@ class Prefabs {
         var navigation = new Navigation("Navi");
         var movement = new MoveableUnit("Move", 2.5);
         var animationPlayer = new AnimationPlayer("AnimationPlayer");
+        var collisionBox = CollisionPolygon.rectangle("Rect", 25, 8, OriginPoint.Center);
+        collisionBox.tags.push("Enemy");
         
         return [
             wolfComp,
             health,
             navigation,
             movement,
-            animationPlayer
+            animationPlayer,
+            collisionBox
         ];
+    }
+
+    public static function generateStdBullet(damage: Int = 10, piercing: Int = 1, velocity: Vec2, tagCheck: String, collider: CollisionShape, tile: h2d.Tile, frames: Int = 1, speed: Int = 10): Array<Component> {
+        var components: Array<Component> = [];
+        
+        var projectile = new Projectile("Proj", collider, tagCheck, velocity, piercing);
+
+        components.push(collider);
+        components.push(projectile);
+
+        if(frames < 2) {
+            var spr = new Sprite("Sprite", tile, 0, OriginPoint.Center);
+            components.push(spr);
+        }
+        else {
+            var animPlayer = new AnimationPlayer("AnimationPlayer");
+            var animation = new Animation(tile, frames, speed, OriginPoint.Center);
+            animPlayer.addAnimationSlot("Bullet", 0, animation);
+            components.push(animPlayer);
+        }
+
+        return components;
     }
 }

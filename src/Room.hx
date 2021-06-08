@@ -1,3 +1,4 @@
+import hxd.Res;
 import hcb.pathfinding.PathfindingGrid;
 import hcb.Entity;
 import h2d.Scene.ScaleModeAlign;
@@ -77,5 +78,6 @@ class Room extends hcb.Room {
 
     private override function onUpdate() {
         ControlPanel.instance.update();
+        collisionWorld.representShapes(drawTo, 5);
     }
 }

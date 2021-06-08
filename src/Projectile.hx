@@ -1,7 +1,9 @@
+import hcb.comp.anim.AnimationPlayer;
+import hcb.math.Vector;
 import hcb.Entity;
 import hcb.comp.col.Collisions.CollisionInfo;
-import hcb.comp.col.CollisionShape;
-import hcb.comp.Component;
+import hcb.comp.col.*;
+import hcb.comp.*;
 import VectorMath;
 
 class Projectile extends Component {
@@ -13,6 +15,9 @@ class Projectile extends Component {
     public var damage: Float = 10;
     public var onCollisionWith: (Entity) -> Void;
 
+    private var animationPlayer: AnimationPlayer;
+    private var sprite: Sprite;
+
     public function new(name: String, collider: CollisionShape, tagCheck: String, ?velocity: Vec2, piercing: Int = 1, ?onCollisionWith: (Entity) -> Void) {
         super(name);
         this.collider = collider;
@@ -20,6 +25,12 @@ class Projectile extends Component {
         this.velocity = velocity == null ? vec2(0, 0) : velocity.clone();
         this.piercing = piercing;
         this.onCollisionWith = onCollisionWith == null ? doDamage : onCollisionWith;
+    }
+
+    private override function init() {
+        parentEntity.onMoveEventSubscribe(onMove);
+        animationPlayer = cast parentEntity.getComponentOfType(AnimationPlayer);
+        sprite = cast parentEntity.getComponentOfType(Sprite);
     }
 
     private override function update() {
@@ -52,6 +63,23 @@ class Projectile extends Component {
         var healthComp: Health = cast entity.getComponentOfType(Health);
         if(healthComp != null) {
             healthComp.offsetHp(-damage);
+        }
+    }
+
+    private function onMove(to: Vec2, from: Vec2) {
+        var ang = hxd.Math.degToRad(Vector.getAngle(to - from));
+        if(sprite != null)
+            sprite.rotation = ang;
+
+        if(animationPlayer != null) {
+            var slot = animationPlayer.getAnimation("Bullet");
+            if(slot != null)
+                slot.rotation = ang;
+        }
+
+        if(Std.isOfType(collider, CollisionPolygon)) {
+            var polygon: CollisionPolygon = cast collider;
+            polygon.rotation = hxd.Math.radToDeg(ang);
         }
     }
 }
