@@ -197,7 +197,7 @@ class ControlPanel extends Object {
             descText += '${selectedInst.name}\n${selectedInst.status}\n';
             var health: Health = cast selectedInst.parentEntity.getComponentOfType(Health);
             if(health != null) {
-                descText += '${health.hp}/${health.maxHp} Hit Points\n';
+                descText += '${Std.int(health.hp)}/${health.maxHp} Hit Points\n';
             }
         }
         descriptionText.text = descText;

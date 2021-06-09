@@ -21,6 +21,8 @@ class Sentry extends Component {
     private var detectionShape: CollisionCircle;
     private var target: Entity = null;
 
+    private var bulletVelocity = 8;
+
     private override function init() {
         building = cast parentEntity.getComponentOfType(Building);
 
@@ -28,13 +30,15 @@ class Sentry extends Component {
         parentEntity.addComponent(base);
 
         animationPlayer = cast parentEntity.getComponentOfType(AnimationPlayer);
-        gun = new Animation(Res.TexturePack.get("StandardTurretGun"), 4, 0, OriginPoint.BottomCenter, 0, 4);
+        gun = new Animation(Res.TexturePack.get("StandardTurretGun"), 4, 0, OriginPoint.CenterLeft, -4, 0);
         animationPlayer.addAnimationSlot("Gun", 0, gun);
 
         building.addDrawable(base.bitmap);
         building.addDrawable(gun);
 
         detectionShape = new CollisionCircle("Detection", 128);
+
+        gun.onFrameEventSubscribe(1, fire);
     }
 
     private override function addedToRoom() {
@@ -43,7 +47,6 @@ class Sentry extends Component {
 
     private override function update() {
         if(building.isDone()) {
-            
             if(target == null) {
                 var results: Array<CollisionInfo> = [];
                 room.collisionWorld.getCollisionAt(detectionShape, results, parentEntity.getPosition(), "Enemy");
@@ -59,14 +62,44 @@ class Sentry extends Component {
                         target = result.shape2.parentEntity;
                     }
                 }
+                gun.speed = 0;
+                gun.currentFrame = 0;
             }
             else if(room.hasEntity(target)){
                 var targetPos: Vec2 = target.getPosition();
-                gun.rotation = Vector.getAngle(targetPos - parentEntity.getPosition());
+                gun.rotation = hxd.Math.degToRad(Vector.getAngle(targetPos - parentEntity.getPosition()));
+                gun.speed = 8;
             }
             else {
                 target = null;
             }
         }
+    }
+
+    private override function removedFromRoom() {
+        parentEntity.removeComponent(base);
+    }
+
+    public function fire() {
+        var angle: Float = hxd.Math.radToDeg(gun.rotation);
+        var direction: Vec2 = Vector.angleToVec2(angle, 1);
+        var spawnPos: Vec2 = parentEntity.getPosition() + direction*10;
+        var velocity: Vec2 = direction*bulletVelocity;
+        var collider: CollisionPolygon = CollisionPolygon.rectangle("Collider", 6, 4, OriginPoint.Center);
+
+        var bullet = new Entity(
+            Prefabs.generateStdBullet(
+                10,
+                1,
+                velocity,
+                "Enemy",
+                collider,
+                Res.TexturePack.get("Bullet")
+            ),
+            spawnPos,
+            2
+        );
+
+        room.addEntity(bullet);
     }
 }

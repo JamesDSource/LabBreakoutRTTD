@@ -1,6 +1,4 @@
-import hcb.CollisionWorld;
 import hcb.comp.col.CollisionShape;
-import hcb.math.Random;
 import hcb.comp.col.Collisions.CollisionInfo;
 import hcb.comp.col.CollisionCircle;
 import hcb.pathfinding.PathfindingGrid;
@@ -19,7 +17,7 @@ class MoveableUnit extends Component {
     private var target: Vec2 = null;
     private var path: Array<Vec2> = null;
     private var pathIndex: Int = 0;
-    public var stopped: Bool = true;
+    private var stopped: Bool = true;
 
     private var detectionCircle: CollisionCircle;
     private var detectionRadius: Float;
@@ -62,11 +60,11 @@ class MoveableUnit extends Component {
 
                 var movementComp: MoveableUnit = cast collision.shape2.parentEntity.getComponentOfType(MoveableUnit);
                 if(movementComp != null) {
-                    if(movementComp.stopped && movementComp.getTarget() != null && movementComp.getTarget().distance(target) < closeEnoughTarget) {
+                    if(movementComp.hasStopped() && movementComp.getTarget() != null && movementComp.getTarget() == target) {
                         path = null;
                         stopped = true;
                     }
-                    else if(!movementComp.stopped) {
+                    else if(!movementComp.hasStopped()) {
                         var dir: Vec2 = normalize(pos - movementComp.parentEntity.getPosition());
                         parentEntity.move(dir*pushAwayForce);
                     }
@@ -92,6 +90,10 @@ class MoveableUnit extends Component {
                 }
             }
         }
+        else {
+            stopped = true;
+            path = null;
+        }
 
         if(collider != null) {
             var collisionInfo: CollisionInfo = room.collisionWorld.getCollisionAt(collider, "Static");
@@ -102,7 +104,7 @@ class MoveableUnit extends Component {
     }
 
     public function setTarget(target: Vec2) {
-        if(pathfindingGrid == null)
+        if(pathfindingGrid == null || (path != null && this.target == target))
             return;
 
         if(target == null) {
@@ -122,5 +124,15 @@ class MoveableUnit extends Component {
 
     public function getTarget(): Vec2 {
         return target == null ? null : target.clone();
-    }     
+    }
+    
+    public function hasStopped(): Bool {
+        return stopped;
+    }
+
+    public function clearPath() {
+        path = null;
+        pathIndex = 0;
+        stopped = true;
+    }
 }

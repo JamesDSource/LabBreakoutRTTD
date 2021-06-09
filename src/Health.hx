@@ -22,7 +22,7 @@ class Health extends Component {
         var prevHp = hp;
         
         hp += offset;
-        hp = hxd.Math.clamp(hp, 0, offset);
+        hp = hxd.Math.clamp(hp, 0, maxHp);
         hpChangeEventCall(offset, hp);
         
         if(hp == 0 && prevHp != 0)

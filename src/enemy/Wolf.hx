@@ -21,7 +21,11 @@ class Wolf extends Enemy {
     private var state(default, set): WolfState = WolfState.Dash;
 
     private var detectionCircle: CollisionCircle;
+    private var detectionRadius: Float = 128;
+    private var attackRadius: Float = 8;
+
     private var targetUnit: Entity = null;
+    private var prevTargetPos: Vec2 = vec2(0, 0);
     private var randomUnit: Entity = null;
 
     private var animationPlayer: AnimationPlayer;
@@ -44,7 +48,7 @@ class Wolf extends Enemy {
         super.init();
         parentEntity.onMoveEventSubscribe(onMove);
 
-        detectionCircle = new CollisionCircle("Detection", 128);
+        detectionCircle = new CollisionCircle("Detection", detectionRadius);
         animationPlayer = cast parentEntity.getComponentOfType(AnimationPlayer);
 
         runAnimation = new Animation(Res.TexturePack.get("WolfRun"), 4, OriginPoint.Center);
@@ -60,14 +64,19 @@ class Wolf extends Enemy {
     private function stateMachine() {
         switch(state) {
             case Dash:
-                if(randomUnit == null) {
+                if(!room.hasEntity(randomUnit)) {
                     randomUnit = getRandomUnit();
                     if(randomUnit == null)
                         return;
 
+                    movement.clearPath();
+                }
+
+                if(movement.hasStopped()) {
                     movement.setTarget(randomUnit.getPosition());
                 }
 
+                detectionCircle.radius = detectionRadius;
                 var results: Array<CollisionInfo> = [];
                 room.collisionWorld.getCollisionAt(detectionCircle, results, parentEntity.getPosition(), "Unit");
                 
@@ -80,10 +89,18 @@ class Wolf extends Enemy {
 
                     if(room.collisionWorld.getCollisionAt(rayCast, "Static") == null) {
                         targetUnit = result.shape2.parentEntity;
+                        movement.clearPath();
                         state = WolfState.Advance;
                     }
                 }
             case Advance:
+                if(!room.hasEntity(targetUnit)) {
+                    state = WolfState.Dash;
+                    return;
+                }
+
+                if(prevTargetPos != targetUnit.getPosition()) 
+                    movement.setTarget(targetUnit.getPosition());
             case Attack:
         }
     }

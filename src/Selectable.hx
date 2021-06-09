@@ -34,7 +34,7 @@ class Selectable extends Component {
         var portraitOffset = hcb.Origin.getOriginOffset(hcb.Origin.OriginPoint.Center, vec2(portrait.width, portrait.height));
         portrait.dx = portraitOffset.x;
         portrait.dy = portraitOffset.y;
-        outline = new h2d.filter.Outline(1, 0xFFFFFF, 0.3, true);
+        outline = new h2d.filter.Outline(1, 0xFFFFFF, 1);
         outline.enable = false;
     }
 

@@ -1,5 +1,8 @@
 package unit;
 
+import hcb.math.Vector;
+import hcb.Origin.OriginPoint;
+import hcb.comp.anim.Animation;
 import haxe.extern.Rest;
 import hcb.comp.col.CollisionShape;
 import VectorMath.distance;
@@ -30,6 +33,10 @@ class Engineer extends Unit {
 
     public var destroyEnt: Entity = null;
 
+    private var idleAnimation: Animation;
+    private var runAnimation: Animation;
+    private var interfaceAnimation: Animation;
+
     private function set_buildEnt(buildEnt: Entity): Entity {
         var buildingComp: Building = cast buildEnt.getComponentOfType(Building);
         if(buildingComp != null) {
@@ -40,6 +47,8 @@ class Engineer extends Unit {
         }
         return this.buildEnt;
     }
+
+    
 
     private override function init() {
         super.init();
@@ -62,6 +71,13 @@ class Engineer extends Unit {
             callBack: removeCallback,
             active: true
         });
+
+        idleAnimation       = new Animation(Res.TexturePack.get("EngineerIdle"), 1, 0, OriginPoint.Center);
+        runAnimation        = new Animation(Res.TexturePack.get("EngineerRun"), 4, 10, OriginPoint.Center);
+        interfaceAnimation  = new Animation(Res.TexturePack.get("EngineerInteract"), 4, 10, OriginPoint.Center);
+        setAnimation = idleAnimation;
+
+        parentEntity.onMoveEventSubscribe(onMove);
     }
 
     private override function addedToRoom() {
@@ -72,6 +88,7 @@ class Engineer extends Unit {
     private override function update() {
         super.update();
         stateMachine();
+        animationStates();
     }
 
     private function stateMachine() {
@@ -105,6 +122,17 @@ class Engineer extends Unit {
                     state = EngineerState.Idle;
                 }
         }
+    }
+
+    private function animationStates() {
+        if(movement.hasStopped()) {
+            if(state == EngineerState.Build)
+                setAnimation = interfaceAnimation;
+            else
+                setAnimation = idleAnimation;
+        }
+        else
+            setAnimation = runAnimation;
     }
 
     private function buildCallback() {
@@ -156,5 +184,12 @@ class Engineer extends Unit {
                 break;
             }
         }
+    }
+
+    private function onMove(to: Vec2, from: Vec2) {
+        var angle = hxd.Math.degToRad(Vector.getAngle(to - from));
+        idleAnimation.rotation = angle;
+        runAnimation.rotation = angle;
+        interfaceAnimation.rotation = angle;
     }
 }

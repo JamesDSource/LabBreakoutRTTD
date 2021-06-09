@@ -46,7 +46,6 @@ class Prefabs {
         var selectable: Selectable = new Selectable(name, portrat);
 
         return [
-            new Sprite("Sprite", h2d.Tile.fromColor(color, 16, 16), 0, OriginPoint.Center),
             selectable,
             unitComp,
             col,
