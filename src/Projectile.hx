@@ -59,7 +59,7 @@ class Projectile extends Component {
         }
     }
 
-    private function doDamage(entity: Entity) {
+    public function doDamage(entity: Entity) {
         var healthComp: Health = cast entity.getComponentOfType(Health);
         if(healthComp != null) {
             healthComp.offsetHp(-damage);

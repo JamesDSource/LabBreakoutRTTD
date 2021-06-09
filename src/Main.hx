@@ -11,6 +11,7 @@ class Main extends hxd.App {
 
     private override function init() {
         BuildingPrefabs.initBuildingData();
+        Research.initResearch();
 
         mouseHint = new h2d.Text(hxd.res.DefaultFont.get());
         mouseHint.textAlign = h2d.Text.Align.Center;

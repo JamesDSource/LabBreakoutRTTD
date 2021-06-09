@@ -124,7 +124,7 @@ class ControlPanel extends Object {
         // * Description
         descriptionFrame = new h2d.ScaleGrid(frameTile, 8, 8, 8, this);
         descriptionFrame.x = xPos;
-        descriptionFrame.width = Room.width*0.2;
+        descriptionFrame.width = Room.width*0.3;
         descriptionFrame.height = guiHeight;
         xPos += descriptionFrame.width;
 
@@ -295,6 +295,23 @@ class ControlPanel extends Object {
             actions.push(buildingAction);
         }
 
+        query(actions, callBack);
+    }
+
+    public function queryResearch(callBack: (ActionButton) -> Void) {
+        var actions: Array<Action> = [];
+        for(data in Research.researchData) {
+            if(!Research.canResearch(data))
+                continue;
+
+            var action: Action = {
+                name: data.name,
+                icon: data.icon,
+                callBack: () -> {},
+                active: true
+            }
+            actions.push(action);
+        }
         query(actions, callBack);
     }
 

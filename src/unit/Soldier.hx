@@ -42,6 +42,10 @@ class Soldier extends Unit {
 
     private final maxRange = 256;
 
+    private final defendingStatus: String = "Defending";
+    private final attackingStatus: String = "Attacking";
+    private final healingStatus: String = "Healing";
+
     private function set_state(state: SoldierState): SoldierState {
         if(this.state != state) {
             previousState = this.state;
@@ -104,7 +108,6 @@ class Soldier extends Unit {
         healParticles.enable = false;
 
         health = cast parentEntity.getComponentOfType(Health);
-        health.offsetHp(-50);
 
         detectionCircle = new CollisionCircle("Detection", maxRange);
     }
@@ -130,6 +133,8 @@ class Soldier extends Unit {
     private function stateMachine() {
         switch(state) {
             case Seek:
+                selectable.status = attackingStatus;
+
                 if(!room.hasEntity(target)) {
                     var results: Array<CollisionInfo> = [];
                     room.collisionWorld.getCollisionAt(detectionCircle, results, parentEntity.getPosition(), "Enemy");
@@ -173,6 +178,8 @@ class Soldier extends Unit {
                 }
                 
             case Defend:
+                selectable.status = defendingStatus;
+
                 if(!movement.hasStopped()) {
                     return;
                 }
@@ -205,6 +212,8 @@ class Soldier extends Unit {
                 rotate(Vector.getAngle(defenseTarget.getPosition() - parentEntity.getPosition()));
                 firing = true;
             case Heal:
+                selectable.status = healingStatus;
+
                 if(!movement.hasStopped()) {
                     state = previousState;
                     return;

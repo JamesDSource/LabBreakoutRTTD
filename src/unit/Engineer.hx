@@ -23,7 +23,7 @@ class Engineer extends Unit {
     public static var fucknuggets: Int = 5;
 
     private var state: EngineerState = EngineerState.Idle;
-    private var buildSpeed: Float = 0.01;
+    private var buildSpeed: Float = 0.002;
 
     public var buildEnt(default, set): Entity = null;
     private var buildBuilding: Building = null;
@@ -36,6 +36,11 @@ class Engineer extends Unit {
     private var idleAnimation: Animation;
     private var runAnimation: Animation;
     private var interfaceAnimation: Animation;
+
+    private final buildingStatus: String = "Building";
+    private final idlingStatus: String = "Idling";
+    private final destroyingStatus: String = "Removing";
+    private final repairStatus: String = "Repairing";
 
     private function set_buildEnt(buildEnt: Entity): Entity {
         var buildingComp: Building = cast buildEnt.getComponentOfType(Building);
@@ -94,7 +99,9 @@ class Engineer extends Unit {
     private function stateMachine() {
         switch(state) {
             case EngineerState.Idle:
+                selectable.status = idlingStatus;
             case EngineerState.Build:
+                selectable.status = buildingStatus;
                 if(!room.hasEntity(buildEnt)) {
                     state = EngineerState.Idle;
                     return;
@@ -102,12 +109,16 @@ class Engineer extends Unit {
 
                 var d = distance(parentEntity.getPosition(), buildEnt.getPosition());
                 if(d < 16) {
+                    selectable.status = "Building";
                     buildBuilding.addProgress(buildSpeed);
                     if(buildBuilding.isDone())
                         state = EngineerState.Idle;
                 }
             case EngineerState.Repair:
+                selectable.status = repairStatus;
             case EngineerState.Destroy:
+                selectable.status = destroyingStatus;
+
                 if(!room.hasEntity(destroyEnt)) {
                     state = EngineerState.Idle;
                     return;

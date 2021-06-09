@@ -381,66 +381,6 @@
 						},
 						{
 							"__identifier": "Unit",
-							"__grid": [34,21],
-							"__pivot": [0.5,0.5],
-							"__tile": null,
-							"width": 16,
-							"height": 16,
-							"defUid": 1,
-							"px": [552,344],
-							"fieldInstances": [{
-								"__identifier": "UnitType",
-								"__value": "Soldier",
-								"__type": "LocalEnum.UnitType",
-								"defUid": 3,
-								"realEditorValues": [{
-									"id": "V_String",
-									"params": ["Soldier"]
-								}]
-							}]
-						},
-						{
-							"__identifier": "Unit",
-							"__grid": [25,27],
-							"__pivot": [0.5,0.5],
-							"__tile": null,
-							"width": 16,
-							"height": 16,
-							"defUid": 1,
-							"px": [408,440],
-							"fieldInstances": [{
-								"__identifier": "UnitType",
-								"__value": "Soldier",
-								"__type": "LocalEnum.UnitType",
-								"defUid": 3,
-								"realEditorValues": [{
-									"id": "V_String",
-									"params": ["Soldier"]
-								}]
-							}]
-						},
-						{
-							"__identifier": "Unit",
-							"__grid": [42,16],
-							"__pivot": [0.5,0.5],
-							"__tile": null,
-							"width": 16,
-							"height": 16,
-							"defUid": 1,
-							"px": [680,264],
-							"fieldInstances": [{
-								"__identifier": "UnitType",
-								"__value": "Soldier",
-								"__type": "LocalEnum.UnitType",
-								"defUid": 3,
-								"realEditorValues": [{
-									"id": "V_String",
-									"params": ["Soldier"]
-								}]
-							}]
-						},
-						{
-							"__identifier": "Unit",
 							"__grid": [56,19],
 							"__pivot": [0.5,0.5],
 							"__tile": null,
@@ -448,26 +388,6 @@
 							"height": 16,
 							"defUid": 1,
 							"px": [904,312],
-							"fieldInstances": [{
-								"__identifier": "UnitType",
-								"__value": "Soldier",
-								"__type": "LocalEnum.UnitType",
-								"defUid": 3,
-								"realEditorValues": [{
-									"id": "V_String",
-									"params": ["Soldier"]
-								}]
-							}]
-						},
-						{
-							"__identifier": "Unit",
-							"__grid": [41,24],
-							"__pivot": [0.5,0.5],
-							"__tile": null,
-							"width": 16,
-							"height": 16,
-							"defUid": 1,
-							"px": [664,392],
 							"fieldInstances": [{
 								"__identifier": "UnitType",
 								"__value": "Soldier",
@@ -490,12 +410,12 @@
 							"px": [792,552],
 							"fieldInstances": [{
 								"__identifier": "UnitType",
-								"__value": "Scientist",
+								"__value": "Engineer",
 								"__type": "LocalEnum.UnitType",
 								"defUid": 3,
 								"realEditorValues": [{
 									"id": "V_String",
-									"params": ["Scientist"]
+									"params": ["Engineer"]
 								}]
 							}]
 						},
