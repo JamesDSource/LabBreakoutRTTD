@@ -421,13 +421,13 @@
 						},
 						{
 							"__identifier": "Unit",
-							"__grid": [57,30],
+							"__grid": [39,26],
 							"__pivot": [0.5,0.5],
 							"__tile": null,
 							"width": 16,
 							"height": 16,
 							"defUid": 1,
-							"px": [920,488],
+							"px": [632,424],
 							"fieldInstances": [{
 								"__identifier": "UnitType",
 								"__value": "Scientist",
@@ -441,53 +441,13 @@
 						},
 						{
 							"__identifier": "Unit",
-							"__grid": [15,30],
+							"__grid": [38,23],
 							"__pivot": [0.5,0.5],
 							"__tile": null,
 							"width": 16,
 							"height": 16,
 							"defUid": 1,
-							"px": [248,488],
-							"fieldInstances": [{
-								"__identifier": "UnitType",
-								"__value": "Engineer",
-								"__type": "LocalEnum.UnitType",
-								"defUid": 3,
-								"realEditorValues": [{
-									"id": "V_String",
-									"params": ["Engineer"]
-								}]
-							}]
-						},
-						{
-							"__identifier": "Unit",
-							"__grid": [15,16],
-							"__pivot": [0.5,0.5],
-							"__tile": null,
-							"width": 16,
-							"height": 16,
-							"defUid": 1,
-							"px": [248,264],
-							"fieldInstances": [{
-								"__identifier": "UnitType",
-								"__value": "Engineer",
-								"__type": "LocalEnum.UnitType",
-								"defUid": 3,
-								"realEditorValues": [{
-									"id": "V_String",
-									"params": ["Engineer"]
-								}]
-							}]
-						},
-						{
-							"__identifier": "Unit",
-							"__grid": [58,27],
-							"__pivot": [0.5,0.5],
-							"__tile": null,
-							"width": 16,
-							"height": 16,
-							"defUid": 1,
-							"px": [936,440],
+							"px": [616,376],
 							"fieldInstances": [{
 								"__identifier": "UnitType",
 								"__value": "Engineer",
@@ -542,6 +502,26 @@
 							"defUid": 8,
 							"px": [1176,344],
 							"fieldInstances": []
+						},
+						{
+							"__identifier": "Unit",
+							"__grid": [60,36],
+							"__pivot": [0.5,0.5],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 1,
+							"px": [968,584],
+							"fieldInstances": [{
+								"__identifier": "UnitType",
+								"__value": "Soldier",
+								"__type": "LocalEnum.UnitType",
+								"defUid": 3,
+								"realEditorValues": [{
+									"id": "V_String",
+									"params": ["Soldier"]
+								}]
+							}]
 						}
 					]
 				}

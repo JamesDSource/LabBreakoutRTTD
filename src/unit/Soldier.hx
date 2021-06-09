@@ -28,8 +28,7 @@ class Soldier extends Unit {
     private var healParticlesSystem: h2d.Particles;
     private var healParticles: h2d.Particles.ParticleGroup;
 
-    private var health: Health;
-    private var healAmount: Float = 0.05;
+    private var healAmount: Float = 0.03;
 
     private var target: Entity = null;
     private var bulletVelocity = 8;
@@ -107,8 +106,6 @@ class Soldier extends Unit {
         healParticles = healParticlesSystem.getGroup("Heal");
         healParticles.enable = false;
 
-        health = cast parentEntity.getComponentOfType(Health);
-
         detectionCircle = new CollisionCircle("Detection", maxRange);
     }
 
@@ -123,6 +120,7 @@ class Soldier extends Unit {
     }
 
     private override function update() {
+        super.update();
         var pos: Vec2 = parentEntity.getPosition();
         healParticlesSystem.x = pos.x;
         healParticlesSystem.y = pos.y;
@@ -211,6 +209,7 @@ class Soldier extends Unit {
 
                 rotate(Vector.getAngle(defenseTarget.getPosition() - parentEntity.getPosition()));
                 firing = true;
+            
             case Heal:
                 selectable.status = healingStatus;
 
@@ -218,7 +217,7 @@ class Soldier extends Unit {
                     state = previousState;
                     return;
                 }
-                health.offsetHp(healAmount);
+                health.offsetHp(healAmount*Research.soldierHealSpeedMult);
                 if(health.hp == health.maxHp) {
                     state = previousState;
                 }
@@ -278,20 +277,29 @@ class Soldier extends Unit {
     }
 
     public function fire() {
+        var damage: Float = 15;
         var angle: Float = hxd.Math.radToDeg(shootAnimation.rotation);
         var direction: Vec2 = Vector.angleToVec2(angle, 1);
         var spawnPos: Vec2 = parentEntity.getPosition() + direction*10;
         var velocity: Vec2 = direction*bulletVelocity;
         var collider: CollisionPolygon = CollisionPolygon.rectangle("Collider", 6, 4, OriginPoint.Center);
+        var onCollisionWith: (Entity) -> Void = null;
+        if(Research.isUnlocked(Research.soldierExplosiveAmmo)) {
+            onCollisionWith = (ent) -> {
+                var explEnt = new Entity(Prefabs.generateExplosive(damage, "Enemy"), ent.getPosition(), 2);
+                room.addEntity(explEnt);
+            }
+        }
 
         var bullet = new Entity(
             Prefabs.generateStdBullet(
-                15,
+                damage,
                 1,
                 velocity,
                 "Enemy",
                 collider,
-                Res.TexturePack.get("Bullet")
+                Res.TexturePack.get("Bullet"),
+                onCollisionWith
             ),
             spawnPos,
             2

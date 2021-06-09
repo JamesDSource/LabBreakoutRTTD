@@ -150,7 +150,7 @@ class Engineer extends Unit {
         ControlPanel.instance.queryBuildings(
             (b: ActionButton) -> {
                 var buildingAction: BuildingAction = cast b.action;
-                var buildingEnt: Entity = new Entity(buildingAction.prefab(buildingAction.cost), 1);
+                var buildingEnt: Entity = new Entity(buildingAction.prefab(buildingAction.cost), 2);
                 room.addEntity(buildingEnt);
                 unitController.setPlaceable(buildingEnt);
                 ControlPanel.instance.metals -= buildingAction.cost;

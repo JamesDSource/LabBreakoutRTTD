@@ -1,3 +1,4 @@
+import unit.Unit;
 import hcb.comp.col.CollisionShape;
 import hcb.comp.col.Collisions.CollisionInfo;
 import hcb.comp.col.CollisionCircle;
@@ -6,7 +7,9 @@ import hcb.comp.*;
 import VectorMath;
 
 class MoveableUnit extends Component {
-    public var movementSpeed: Float;
+    public var baseSpeed: Float;
+    public var movementSpeed(get, null): Float;
+    public var tempSpeedMod: Float = 1.0;
 
     public var roomExt: Room = null;
     private var pathfindingGrid: PathfindingGrid = null;
@@ -26,9 +29,16 @@ class MoveableUnit extends Component {
 
     private var collider: CollisionShape;
 
+    private function get_movementSpeed(): Float {
+        var spd = baseSpeed;
+        if(parentEntity.getComponentOfType(Unit) != null)
+            spd *= Research.unitSpeedMult;
+        return spd*tempSpeedMod;
+    }
+
     public function new(name: String, movementSpeed: Float = 2, detectionRadius: Float = 16, ?collider: CollisionShape) {
         super(name);
-        this.movementSpeed = movementSpeed;
+        this.baseSpeed = movementSpeed;
         this.detectionRadius = detectionRadius;
         this.collider = collider;
     }
@@ -101,6 +111,8 @@ class MoveableUnit extends Component {
                 parentEntity.move(-collisionInfo.normal*collisionInfo.depth);
             }
         }
+
+        tempSpeedMod = 1.0;
     }
 
     public function setTarget(target: Vec2) {

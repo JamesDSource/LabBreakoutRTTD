@@ -43,7 +43,7 @@ class Scientist extends Unit {
     }
 
     private override function update() {
-
+        super.update();
         if(currentResearch == null)
             selectable.status = "Idling";
         else {

@@ -1,313 +1,341 @@
 
 TexturePack.png
-size: 512, 128
+size: 1024, 128
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 ActionIconFrame
   rotate: false
-  xy: 4, 22
+  xy: 208, 11
   size: 34, 34
   orig: 34, 34
   offset: 0, 0
   index: -1
 BuildActionIcon
   rotate: false
-  xy: 280, 92
+  xy: 308, 69
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Bullet
   rotate: false
-  xy: 236, 65
+  xy: 264, 88
   size: 6, 4
   orig: 6, 4
   offset: 0, 0
   index: -1
 DeconstructActionIcon
   rotate: false
-  xy: 42, 24
+  xy: 737, 88
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 DefenseActionIcon
   rotate: false
-  xy: 366, 37
+  xy: 560, 69
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 EngiSpeedUpgradeIcon1
   rotate: false
-  xy: 388, 92
+  xy: 524, 69
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 EngiSpeedUpgradeIcon2
   rotate: false
-  xy: 258, 37
+  xy: 344, 69
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 EngiSpeedUpgradeIcon3
   rotate: false
-  xy: 474, 56
+  xy: 668, 33
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 EngineerDead
   rotate: false
-  xy: 407, 18
+  xy: 724, 69
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
   index: -1
 EngineerIdle
   rotate: false
-  xy: 432, 73
+  xy: 704, 31
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
   index: -1
 EngineerInteract
   rotate: false
-  xy: 196, 5
+  xy: 308, 105
   size: 60, 15
   orig: 60, 15
   offset: 0, 0
   index: -1
 EngineerPortrait
   rotate: false
-  xy: 4, 60
+  xy: 4, 4
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 EngineerRun
   rotate: false
-  xy: 236, 73
+  xy: 372, 105
   size: 60, 15
   orig: 60, 15
   offset: 0, 0
   index: -1
 ExplosiveAmmoUpgradeIcon
   rotate: false
-  xy: 352, 92
+  xy: 452, 69
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
+ExplosiveParticle
+  rotate: false
+  xy: 208, 49
+  size: 48, 24
+  orig: 48, 24
+  offset: 0, 0
+  index: -1
 FightActionIcon
   rotate: false
-  xy: 402, 37
+  xy: 596, 69
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Frame
   rotate: false
-  xy: 208, 64
+  xy: 989, 96
   size: 24, 24
   orig: 24, 24
   offset: 0, 0
   index: -1
+FreezeFieldBase
+  rotate: false
+  xy: 282, 83
+  size: 22, 23
+  orig: 22, 23
+  offset: 0, 0
+  index: -1
+FreezeFieldFrost
+  rotate: false
+  xy: 4, 72
+  size: 192, 48
+  orig: 192, 48
+  offset: 0, 0
+  index: -1
+FreezeFieldTop
+  rotate: false
+  xy: 989, 80
+  size: 18, 12
+  orig: 18, 12
+  offset: 0, 0
+  index: -1
 FrostFieldTowerUnlockIcon
   rotate: false
-  xy: 78, 24
+  xy: 773, 88
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 HealActionIcon
   rotate: false
-  xy: 150, 24
+  xy: 845, 88
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 MoveSpeedUpgradeIcon1
   rotate: false
-  xy: 424, 92
+  xy: 632, 76
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 MoveSpeedUpgradeIcon2
   rotate: false
-  xy: 294, 37
+  xy: 380, 69
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 MoveSpeedUpgradeIcon3
   rotate: false
-  xy: 114, 24
+  xy: 809, 88
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 RegenSpeedUpgradeIcon1
   rotate: false
-  xy: 330, 37
+  xy: 488, 69
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 RegenSpeedUpgradeIcon2
   rotate: false
-  xy: 222, 28
+  xy: 953, 88
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 RegenSpeedUpgradeIcon3
   rotate: false
-  xy: 438, 37
+  xy: 688, 69
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 RemoveActionIcon
   rotate: false
-  xy: 208, 92
+  xy: 917, 88
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 RepairActionIcon
   rotate: false
-  xy: 186, 24
+  xy: 881, 88
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 ResearchActionIcon
   rotate: false
-  xy: 460, 92
+  xy: 632, 40
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 ScientistDead
   rotate: false
-  xy: 413, 73
+  xy: 704, 50
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
   index: -1
 ScientistIdle
   rotate: false
-  xy: 426, 18
+  xy: 723, 50
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
   index: -1
 ScientistInteract
   rotate: false
-  xy: 260, 6
+  xy: 500, 105
   size: 60, 15
   orig: 60, 15
   offset: 0, 0
   index: -1
 ScientistPortrait
   rotate: false
-  xy: 72, 60
+  xy: 72, 4
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 ScientistRun
   rotate: false
-  xy: 132, 5
+  xy: 200, 77
   size: 60, 15
   orig: 60, 15
   offset: 0, 0
   index: -1
 SentryIcon
   rotate: false
-  xy: 316, 92
+  xy: 416, 69
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 SoldierAttack
   rotate: false
-  xy: 364, 73
+  xy: 688, 105
   size: 45, 15
   orig: 45, 15
   offset: 0, 0
   index: -1
 SoldierDead
   rotate: false
-  xy: 388, 18
+  xy: 668, 73
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
   index: -1
 SoldierIdle
   rotate: false
-  xy: 451, 73
+  xy: 743, 69
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
   index: -1
 SoldierInteract
   rotate: false
-  xy: 324, 18
+  xy: 564, 105
   size: 60, 15
   orig: 60, 15
   offset: 0, 0
   index: -1
 SoldierPortrait
   rotate: false
-  xy: 140, 60
+  xy: 140, 4
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 SoldierRun
   rotate: false
-  xy: 300, 73
+  xy: 436, 105
   size: 60, 15
   orig: 60, 15
   offset: 0, 0
   index: -1
 StandardTurretBase
   rotate: false
-  xy: 112, 4
+  xy: 668, 92
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 StandardTurretGun
   rotate: false
-  xy: 258, 25
+  xy: 628, 112
   size: 56, 8
   orig: 56, 8
   offset: 0, 0
   index: -1
 UnitRegenUpgradeIcon
   rotate: false
-  xy: 244, 92
+  xy: 246, 13
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 WolfAttack
   rotate: false
-  xy: 324, 4
+  xy: 200, 96
   size: 78, 10
   orig: 78, 10
   offset: 0, 0
   index: -1
 WolfRun
   rotate: false
-  xy: 4, 8
+  xy: 200, 110
   size: 104, 10
   orig: 104, 10
   offset: 0, 0

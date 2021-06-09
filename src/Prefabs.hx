@@ -1,3 +1,4 @@
+import hcb.Entity;
 import hcb.comp.anim.Animation;
 import unit.*;
 import enemy.*;
@@ -75,10 +76,10 @@ class Prefabs {
         ];
     }
 
-    public static function generateStdBullet(damage: Int = 10, piercing: Int = 1, velocity: Vec2, tagCheck: String, collider: CollisionShape, tile: h2d.Tile, frames: Int = 1, speed: Int = 10): Array<Component> {
+    public static function generateStdBullet(damage: Float = 10, piercing: Int = 1, velocity: Vec2, tagCheck: String, collider: CollisionShape, tile: h2d.Tile, frames: Int = 1, speed: Int = 10, ?onCollisionWith: (Entity) -> Void): Array<Component> {
         var components: Array<Component> = [];
         
-        var projectile = new Projectile("Proj", collider, tagCheck, velocity, piercing);
+        var projectile = new Projectile("Proj", collider, tagCheck, velocity, piercing, onCollisionWith);
 
         components.push(collider);
         components.push(projectile);
@@ -95,5 +96,12 @@ class Prefabs {
         }
 
         return components;
+    }
+
+    public static function generateExplosive(damage: Float, tagCheck: String) {
+        return [
+            new AnimationPlayer("Anim"),
+            new Explosion("Explosion", tagCheck, damage, 12)
+        ];
     }
 }

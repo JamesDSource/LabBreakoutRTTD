@@ -19,7 +19,7 @@ typedef BackAction = {
 }
 
 class ControlPanel extends Object {
-    public var metals(default, set): Int = 20;
+    public var metals(default, set): Int = 2000;
 
     public static final guiHeight: Float = 96;
 
@@ -279,6 +279,9 @@ class ControlPanel extends Object {
     public function queryBuildings(callBack: (ActionButton) -> Void) {
         var actions: Array<Action> = [];
         for(data in BuildingPrefabs.buildingData) {
+            if(data.researchNeeded != null && !Research.isUnlocked(data.researchNeeded))
+                continue;
+
             var buildingAction: BuildingAction = {
                 name: '${data.name}\n${data.cost}RE',
                 icon: data.icon,
