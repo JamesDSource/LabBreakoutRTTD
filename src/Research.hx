@@ -13,51 +13,83 @@ class Research {
     private static var researchProgress: Map<String, {start: Int, left: Int, unlocked: Bool, ?onUnlock: () -> Void}> = [];
 
     public static final unitMoveSpeedUpgrade: String        = "+ Unit Move Speed";
+    public static final unitMoveSpeedUpgrade2: String       = "++ Unit Move Speed";
     public static final freezeFieldUpgrade: String          = "Freeze Field";
+    public static final mortarUpgrade: String               = "Mortar Tower";
     public static final engineerRepairSpeedUpgrade: String  = "+ Engineer Repair Speed";
     public static final soldierHealSpeedUpgrade: String     = "+ Soldier Heal Speed";
+    public static final timeBonusUpgrade: String            = "+ Time Between Waves";
+    public static final timeBonusUpgrade2: String           = "++ Time Between Waves";
     public static final unitHpRegenUpgrade: String          = "Unit HP Regen";
     public static final soldierExplosiveAmmo: String        = "Soldier Explosive Ammo";
 
     public static var unitSpeedMult: Float = 1.0;
     public static var repairSpeedMult: Float = 1.0;
     public static var soldierHealSpeedMult: Float = 1.0;
+    public static var timeBonus: Float = 0.0;
 
     public static function initResearch() {
         // * Add research data
         researchData = [
-            {
+            {   // * Unit movement
                 name: unitMoveSpeedUpgrade,
                 icon: Res.TexturePack.get("MoveSpeedUpgradeIcon1"),
                 pointsNeeded: 2,
                 onUnlock: () -> unitSpeedMult = 1.15
             },
-            {
+            {   // * Freeze field
                 name: freezeFieldUpgrade,
                 icon: Res.TexturePack.get("FrostFieldTowerUnlockIcon"),
                 pointsNeeded: 3
             },
-            {
+            {   // * Mortar tower
+                name: mortarUpgrade,
+                icon: Res.TexturePack.get("MortarTowerUnlockIcon"),
+                pointsNeeded: 4,
+                required: [freezeFieldUpgrade]
+            },
+            {   // * Engineer Repair
                 name: engineerRepairSpeedUpgrade,
                 icon: Res.TexturePack.get("EngiSpeedUpgradeIcon1"),
                 pointsNeeded: 3,
                 required: [unitMoveSpeedUpgrade],
                 onUnlock: () -> repairSpeedMult = 1.25
             },
-            {
+            {   // * Soldier heal
                 name: soldierHealSpeedUpgrade,
                 icon: Res.TexturePack.get("RegenSpeedUpgradeIcon1"),
                 pointsNeeded: 3,
                 required: [unitMoveSpeedUpgrade],
                 onUnlock: () -> soldierHealSpeedMult = 1.25 
             },
-            {
+            {   // * Unit movement 2
+                name: unitMoveSpeedUpgrade2,
+                icon: Res.TexturePack.get("MoveSpeedUpgradeIcon2"),
+                pointsNeeded: 6,
+                required: [engineerRepairSpeedUpgrade],
+                onUnlock: () -> unitSpeedMult = 1.5
+            },
+            {   // * Time bonus
+                name: timeBonusUpgrade,
+                icon: Res.TexturePack.get("WaveTimeUpgradeIcon1"),
+                pointsNeeded: 5,
+                required: [soldierHealSpeedUpgrade],
+                onUnlock: () -> timeBonus += 5
+            },
+            {   // * Time bonus 2
+                name: timeBonusUpgrade2,
+                icon: Res.TexturePack.get("WaveTimeUpgradeIcon2"),
+                pointsNeeded: 7,
+                required: [timeBonusUpgrade],
+                onUnlock: () -> timeBonus += 10
+            },
+            {   // * Unit regen
                 name: unitHpRegenUpgrade,
                 icon: Res.TexturePack.get("UnitRegenUpgradeIcon"),
                 pointsNeeded: 5,
                 required: [engineerRepairSpeedUpgrade]
             },
-            {
+            {   // * Explosive Ammo
                 name: soldierExplosiveAmmo,
                 icon: Res.TexturePack.get("ExplosiveAmmoUpgradeIcon"),
                 pointsNeeded: 6,

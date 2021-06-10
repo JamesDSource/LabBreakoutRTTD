@@ -193,14 +193,4 @@ class Monkey extends Enemy {
         var radAngle: Float = hxd.Math.degToRad(angle);
         runAnimation.rotation = punchAnimation.rotation = throwAnimation.rotation = radAngle;
     }
-
-    private function canSee(entity: Entity): Bool {
-        var ray: Raycast = {
-            origin: parentEntity.getPosition(),
-            castTo: entity.getPosition() - parentEntity.getPosition(),
-            infinite: false
-        }
-
-        return room.collisionWorld.getCollisionAt(ray, "Static") == null;
-    }
 }

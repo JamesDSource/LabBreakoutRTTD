@@ -95,6 +95,25 @@ class Prefabs {
         ];
     }
 
+    public static function generateAlligator() {
+        var alligator = new Alligator("Alligator");
+        var health = new Health("Hp", 250);
+        var navigation = new Navigation("Navi");
+        var movement = new MoveableUnit("Move", 1, true);
+        var animationPlayer = new AnimationPlayer("AnimationPlayer");
+        var collisionBox = CollisionPolygon.rectangle("Rect", 38, 12, OriginPoint.Center);
+        collisionBox.tags.push("Enemy");
+        
+        return [
+            alligator,
+            health,
+            navigation,
+            movement,
+            animationPlayer,
+            collisionBox
+        ];
+    }
+
     public static function generateStdBullet(damage: Float = 10, piercing: Int = 1, velocity: Vec2, tagCheck: Array<String>, collider: CollisionShape, tile: h2d.Tile, frames: Int = 1, speed: Int = 10, ?onCollisionWith: (Entity) -> Void): Array<Component> {
         var components: Array<Component> = [];
         

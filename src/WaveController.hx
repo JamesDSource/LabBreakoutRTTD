@@ -1,3 +1,4 @@
+import hxd.res.Prefab;
 import hcb.Entity;
 import hcb.math.Random;
 import hcb.Timer;
@@ -15,15 +16,21 @@ class WaveController {
     public static final enemies: Array<WaveEnemy> = [
         {
             prefab: Prefabs.generateWolf,
-            probability: 10,
+            probability: 5,
             cost: 1,
             minRound: 1
         },
         {
             prefab: Prefabs.generateMonkey,
-            probability: 10,
-            cost: 1,
-            minRound: 3
+            probability: 4,
+            cost: 2,
+            minRound: 4
+        },
+        {
+            prefab: Prefabs.generateAlligator,
+            probability: 2,
+            cost: 4,
+            minRound: 9
         }
     ];
 
@@ -47,7 +54,7 @@ class WaveController {
 
     private function new(room: Room, spawnPositions: Array<Vec2>) {
         this.room = room;
-        waveTimer = new Timer("Wave", 60, nextWave);
+        waveTimer = new Timer("Wave", 10, nextWave);
         spawnTimer = new Timer("Spawn", 2, spawn);
         room.addTimer(waveTimer);
         room.addTimer(spawnTimer);
@@ -92,7 +99,7 @@ class WaveController {
             else if(enemyCount == 0) {
                 tokens = 0;
                 if(waveTimer.timeRemaining == 0) {
-                    waveTimer.initialTime = 30;
+                    waveTimer.initialTime = 30 + Research.timeBonus;
                     waveTimer.reset();
                 }
             }

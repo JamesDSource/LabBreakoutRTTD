@@ -288,7 +288,7 @@ class Soldier extends Unit {
         var onCollisionWith: (Entity) -> Void = null;
         if(Research.isUnlocked(Research.soldierExplosiveAmmo)) {
             onCollisionWith = (ent) -> {
-                var explEnt = new Entity(Prefabs.generateExplosive(damage, "Enemy"), ent.getPosition(), 2);
+                var explEnt = new Entity(Prefabs.generateExplosive(damage + 5, "Enemy"), ent.getPosition(), 2);
                 room.addEntity(explEnt);
             }
         }

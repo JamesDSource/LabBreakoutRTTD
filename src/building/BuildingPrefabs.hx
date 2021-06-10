@@ -27,16 +27,23 @@ class BuildingPrefabs {
         buildingData = [
             {
                 name: "Sentry",
-                cost: 20,
+                cost: 80,
                 entityPrefab: generateSentry,
                 icon: Res.TexturePack.get("SentryIcon")
             },
             {
                 name: "Freeze Feild",
-                cost: 25,
+                cost: 100,
                 entityPrefab: generateFreezeField,
-                icon: Res.TexturePack.get("FrostFieldTowerUnlockIcon"),
+                icon: Res.TexturePack.get("FrostFieldIcon"),
                 researchNeeded: Research.freezeFieldUpgrade
+            },
+            {
+                name: "Mortar Tower",
+                cost: 150,
+                entityPrefab: null,
+                icon: Res.TexturePack.get("MortarIcon"),
+                researchNeeded: Research.mortarUpgrade
             }
         ];
     }
@@ -60,16 +67,21 @@ class BuildingPrefabs {
     }
 
     public static function generateSentry(cost: Int): Array<Component> {
-        var components = generateBuilding(cost, 80, 8);
+        var components = generateBuilding(cost, 85, 8);
         var sentry = new Sentry("Sentry");
         components.push(sentry);
         return components;
     }
 
     public static function generateFreezeField(cost: Int): Array<Component> {
-        var components = generateBuilding(cost, 50, 9);
+        var components = generateBuilding(cost, 120, 9);
         var freezeField = new FreezeField("Field");
         components.push(freezeField);
+        return components;
+    }
+
+    public static function generateMortar(cost: Int): Array<Component> {
+        var components = generateBuilding(cost, 60, 12);
         return components;
     }
 }

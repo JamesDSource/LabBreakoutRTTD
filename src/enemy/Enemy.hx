@@ -1,5 +1,6 @@
 package enemy;
 
+import hcb.comp.col.Collisions.Raycast;
 import hcb.comp.anim.*;
 import hcb.math.Random;
 import hcb.Entity;
@@ -45,5 +46,15 @@ class Enemy extends Component {
             return null;
         Random.generator.shuffle(roomExt.units);
         return roomExt.units[0];
+    }
+
+    private function canSee(entity: Entity): Bool {
+        var ray: Raycast = {
+            origin: parentEntity.getPosition(),
+            castTo: entity.getPosition() - parentEntity.getPosition(),
+            infinite: false
+        }
+
+        return room.collisionWorld.getCollisionAt(ray, "Static") == null;
     }
 }

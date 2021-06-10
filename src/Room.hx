@@ -110,7 +110,7 @@ class Room extends hcb.Room {
 
     private override function onUpdate() {
         ControlPanel.instance.update();
-        //collisionWorld.representShapes(drawTo, 5);
+        collisionWorld.representShapes(drawTo, 5);
 
         if(Key.isPressed(Key.ESCAPE) && !gameOver)
             paused = !paused;
