@@ -19,7 +19,7 @@ typedef BackAction = {
 }
 
 class ControlPanel extends Object {
-    public var metals(default, set): Int = 2000;
+    public var metals(default, set): Int = 100;
 
     public static final guiHeight: Float = 96;
 

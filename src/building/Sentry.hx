@@ -48,6 +48,7 @@ class Sentry extends Component {
     private override function update() {
         if(building.isDone()) {
             if(target == null) {
+                detectionShape.radius = 128*Research.towerRangeMult;
                 var results: Array<CollisionInfo> = [];
                 room.collisionWorld.getCollisionAt(detectionShape, results, parentEntity.getPosition(), "Enemy");
 
@@ -68,7 +69,7 @@ class Sentry extends Component {
             else if(room.hasEntity(target)){
                 var targetPos: Vec2 = target.getPosition();
                 gun.rotation = hxd.Math.degToRad(Vector.getAngle(targetPos - parentEntity.getPosition()));
-                gun.speed = 8;
+                gun.speed = 8*Research.towerFireRateMult;
             }
             else {
                 target = null;
@@ -89,7 +90,7 @@ class Sentry extends Component {
 
         var bullet = new Entity(
             Prefabs.generateStdBullet(
-                10,
+                10*Research.towerDamageMult,
                 1,
                 velocity,
                 ["Enemy"],

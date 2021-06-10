@@ -6,7 +6,7 @@ filter: Nearest, Nearest
 repeat: none
 ActionIconFrame
   rotate: false
-  xy: 272, 20
+  xy: 458, 40
   size: 34, 34
   orig: 34, 34
   offset: 0, 0
@@ -25,128 +25,163 @@ AlligatorSpin
   orig: 500, 46
   offset: 0, 0
   index: -1
+ArbalestBeamerBase
+  rotate: false
+  xy: 2024, 108
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+ArbalestBeamerBow
+  rotate: false
+  xy: 208, 38
+  size: 72, 22
+  orig: 72, 22
+  offset: 0, 0
+  index: -1
+ArbalestBolt
+  rotate: false
+  xy: 704, 118
+  size: 128, 6
+  orig: 128, 6
+  offset: 0, 0
+  index: -1
+ArbalestTowerIcon
+  rotate: false
+  xy: 1952, 92
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+ArbalestTowerUnlockIcon
+  rotate: false
+  xy: 640, 40
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 BuildActionIcon
   rotate: false
-  xy: 1150, 92
+  xy: 1448, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Bullet
   rotate: false
-  xy: 996, 108
+  xy: 704, 22
   size: 6, 4
   orig: 6, 4
   offset: 0, 0
   index: -1
 Dart
   rotate: false
-  xy: 442, 52
+  xy: 824, 111
   size: 8, 3
   orig: 8, 3
   offset: 0, 0
   index: -1
 DeconstructActionIcon
   rotate: false
-  xy: 346, 4
+  xy: 532, 40
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 DefenseActionIcon
   rotate: false
-  xy: 1474, 92
+  xy: 1916, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 EngiSpeedUpgradeIcon1
   rotate: false
-  xy: 1438, 92
+  xy: 1880, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 EngiSpeedUpgradeIcon2
   rotate: false
-  xy: 1186, 92
+  xy: 1484, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 EngiSpeedUpgradeIcon3
   rotate: false
-  xy: 1690, 92
+  xy: 392, 4
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 EngineerDead
   rotate: false
-  xy: 1828, 109
+  xy: 567, 21
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
   index: -1
 EngineerIdle
   rotate: false
-  xy: 473, 4
+  xy: 548, 21
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
   index: -1
 EngineerInteract
   rotate: false
-  xy: 372, 59
+  xy: 908, 109
   size: 60, 15
   orig: 60, 15
   offset: 0, 0
   index: -1
 EngineerPortrait
   rotate: false
-  xy: 704, 46
+  xy: 704, 30
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 EngineerRun
   rotate: false
-  xy: 208, 39
+  xy: 840, 41
   size: 60, 15
   orig: 60, 15
   offset: 0, 0
   index: -1
 ExplosiveAmmoUpgradeIcon
   rotate: false
-  xy: 1330, 92
+  xy: 1700, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 ExplosiveParticle
   rotate: false
-  xy: 908, 88
+  xy: 972, 81
   size: 48, 24
   orig: 48, 24
   offset: 0, 0
   index: -1
 FightActionIcon
   rotate: false
-  xy: 1510, 92
+  xy: 1988, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 Frame
   rotate: false
-  xy: 1754, 100
+  xy: 676, 20
   size: 24, 24
   orig: 24, 24
   offset: 0, 0
   index: -1
 FreezeFieldBase
   rotate: false
-  xy: 1782, 101
+  xy: 464, 13
   size: 22, 23
   orig: 22, 23
   offset: 0, 0
@@ -160,28 +195,28 @@ FreezeFieldFrost
   index: -1
 FreezeFieldTop
   rotate: false
-  xy: 204, 4
+  xy: 490, 4
   size: 18, 12
   orig: 18, 12
   offset: 0, 0
   index: -1
 FrostFieldIcon
   rotate: false
-  xy: 1006, 92
+  xy: 1196, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 FrostFieldTowerUnlockIcon
   rotate: false
-  xy: 418, 4
+  xy: 604, 40
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 HealActionIcon
   rotate: false
-  xy: 908, 52
+  xy: 1088, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -202,238 +237,322 @@ MonkeyRun
   index: -1
 MonkeyThrow
   rotate: false
-  xy: 208, 58
+  xy: 704, 98
   size: 96, 16
   orig: 96, 16
   offset: 0, 0
   index: -1
 MortarIcon
   rotate: false
-  xy: 1582, 92
+  xy: 876, 5
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 MortarTowerBase
   rotate: false
-  xy: 1726, 100
+  xy: 676, 48
   size: 24, 24
   orig: 24, 24
   offset: 0, 0
   index: -1
 MortarTowerUnlockIcon
   rotate: false
-  xy: 1114, 92
+  xy: 1340, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 MortarTube
   rotate: false
-  xy: 954, 116
+  xy: 1036, 116
   size: 48, 8
   orig: 48, 8
   offset: 0, 0
   index: -1
 MoveSpeedUpgradeIcon1
   rotate: false
-  xy: 1546, 92
+  xy: 840, 5
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 MoveSpeedUpgradeIcon2
   rotate: false
-  xy: 1258, 92
+  xy: 1592, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 MoveSpeedUpgradeIcon3
   rotate: false
-  xy: 382, 4
+  xy: 568, 40
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 RegenSpeedUpgradeIcon1
   rotate: false
-  xy: 1366, 92
+  xy: 1736, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 RegenSpeedUpgradeIcon2
   rotate: false
-  xy: 1078, 92
+  xy: 1304, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 RegenSpeedUpgradeIcon3
   rotate: false
-  xy: 1618, 92
+  xy: 972, 45
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 RemoveActionIcon
   rotate: false
-  xy: 1042, 92
+  xy: 1232, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 RepairActionIcon
   rotate: false
-  xy: 960, 80
+  xy: 1124, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 ResearchActionIcon
   rotate: false
-  xy: 1654, 92
+  xy: 320, 9
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 ScientistDead
   rotate: false
-  xy: 423, 40
+  xy: 510, 21
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
   index: -1
 ScientistIdle
   rotate: false
-  xy: 1847, 109
+  xy: 586, 21
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
   index: -1
 ScientistInteract
   rotate: false
-  xy: 208, 20
+  xy: 972, 109
   size: 60, 15
   orig: 60, 15
   offset: 0, 0
   index: -1
 ScientistPortrait
   rotate: false
-  xy: 772, 46
+  xy: 772, 30
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 ScientistRun
   rotate: false
-  xy: 308, 59
+  xy: 284, 45
   size: 60, 15
   orig: 60, 15
   offset: 0, 0
   index: -1
 SentryIcon
   rotate: false
-  xy: 1294, 92
+  xy: 1664, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 SoldierAttack
   rotate: false
-  xy: 374, 40
+  xy: 348, 45
   size: 45, 15
   orig: 45, 15
   offset: 0, 0
   index: -1
 SoldierDead
   rotate: false
-  xy: 454, 4
+  xy: 529, 21
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
   index: -1
 SoldierIdle
   rotate: false
-  xy: 1866, 109
+  xy: 605, 21
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
   index: -1
 SoldierInteract
   rotate: false
-  xy: 310, 40
+  xy: 908, 71
   size: 60, 15
   orig: 60, 15
   offset: 0, 0
   index: -1
 SoldierPortrait
   rotate: false
-  xy: 840, 46
+  xy: 840, 60
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 SoldierRun
   rotate: false
-  xy: 436, 59
+  xy: 908, 90
   size: 60, 15
   orig: 60, 15
   offset: 0, 0
   index: -1
 StandardTurretBase
   rotate: false
-  xy: 1808, 108
+  xy: 804, 98
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 StandardTurretGun
   rotate: false
-  xy: 894, 116
+  xy: 398, 66
   size: 56, 8
   orig: 56, 8
   offset: 0, 0
   index: -1
+Teleporter
+  rotate: false
+  xy: 490, 20
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+TeleporterIcon
+  rotate: false
+  xy: 1008, 45
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+TeleporterUnlockIcon
+  rotate: false
+  xy: 1376, 92
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+TowerDamageUpgradeIcon1
+  rotate: false
+  xy: 1844, 92
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+TowerDamageUpgradeIcon2
+  rotate: false
+  xy: 1412, 92
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+TowerDamageUpgradeIcon3
+  rotate: false
+  xy: 356, 9
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+TowerFireRateUpgradeIcon1
+  rotate: false
+  xy: 1520, 92
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+TowerFireRateUpgradeIcon2
+  rotate: false
+  xy: 428, 4
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+TowerFireRateUpgradeIcon3
+  rotate: false
+  xy: 1772, 92
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+TowerRangeUpgradeIcon1
+  rotate: false
+  xy: 1268, 92
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+TowerRangeUpgradeIcon2
+  rotate: false
+  xy: 284, 9
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+TowerRangeUpgradeIcon3
+  rotate: false
+  xy: 1628, 92
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 UnitRegenUpgradeIcon
   rotate: false
-  xy: 454, 23
+  xy: 1160, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 WaveTimeUpgradeIcon1
   rotate: false
-  xy: 1222, 92
+  xy: 1556, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 WaveTimeUpgradeIcon2
   rotate: false
-  xy: 310, 4
+  xy: 496, 40
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 WaveTimeUpgradeIcon3
   rotate: false
-  xy: 1402, 92
+  xy: 1808, 92
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 WolfAttack
   rotate: false
-  xy: 812, 114
+  xy: 316, 64
   size: 78, 10
   orig: 78, 10
   offset: 0, 0
   index: -1
 WolfRun
   rotate: false
-  xy: 704, 114
+  xy: 208, 64
   size: 104, 10
   orig: 104, 10
   offset: 0, 0

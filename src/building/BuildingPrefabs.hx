@@ -44,6 +44,20 @@ class BuildingPrefabs {
                 entityPrefab: generateMortar,
                 icon: Res.TexturePack.get("MortarIcon"),
                 researchNeeded: Research.mortarUpgrade
+            },
+            {
+                name: "Arbalest Beamer",
+                cost: 200,
+                entityPrefab: generateArbalest,
+                icon: Res.TexturePack.get("ArbalestTowerIcon"),
+                researchNeeded: Research.arbalestUpgrade
+            },
+            {
+                name: "Escape Teleporter",
+                cost: 1000,
+                entityPrefab: generateTeleporter,
+                icon: Res.TexturePack.get("TeleporterIcon"),
+                researchNeeded: Research.teleporterUnlock
             }
         ];
     }
@@ -67,23 +81,37 @@ class BuildingPrefabs {
     }
 
     public static function generateSentry(cost: Int): Array<Component> {
-        var components = generateBuilding(cost, 85, 8);
+        var components = generateBuilding(cost, 70, 8);
         var sentry = new Sentry("Sentry");
         components.push(sentry);
         return components;
     }
 
     public static function generateFreezeField(cost: Int): Array<Component> {
-        var components = generateBuilding(cost, 120, 9);
+        var components = generateBuilding(cost, 100, 9);
         var freezeField = new FreezeField("Field");
         components.push(freezeField);
         return components;
     }
 
     public static function generateMortar(cost: Int): Array<Component> {
-        var components = generateBuilding(cost, 60, 12);
+        var components = generateBuilding(cost, 10, 12);
         var mortar = new Mortar("Mortar");
         components.push(mortar);
+        return components;
+    }
+
+    public static function generateArbalest(cost: Int): Array<Component> {
+        var components = generateBuilding(cost, 60, 8);
+        var arbalest = new Arbalest("Arbalest");
+        components.push(arbalest);
+        return components;
+    }
+
+    public static function generateTeleporter(cost: Int): Array<Component> {
+        var components = generateBuilding(cost, 10000, 8);
+        var teleporter = new Teleporter("Teleporter");
+        components.push(teleporter);
         return components;
     }
 }

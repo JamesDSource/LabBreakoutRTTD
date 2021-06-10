@@ -76,17 +76,20 @@ class Room extends hcb.Room {
         // * Collisions
         var indexGrid: hcb.IndexGrid.IGrid = hcb.IndexGrid.ldtkTilesConvert(level.l_Collisions);
         var tilePrefabs: Map<Int, (Vec2, Float) -> hcb.comp.col.CollisionShape> = [];
-        tilePrefabs[1] = hcb.IndexGrid.slopeBuild.bind(hcb.IndexGrid.SlopeFace.TopLeft,     _, _);
-        tilePrefabs[2] = hcb.IndexGrid.slopeBuild.bind(hcb.IndexGrid.SlopeFace.TopRight,    _, _);
-        tilePrefabs[4] = hcb.IndexGrid.slopeBuild.bind(hcb.IndexGrid.SlopeFace.BottomLeft,  _, _);
-        tilePrefabs[5] = hcb.IndexGrid.slopeBuild.bind(hcb.IndexGrid.SlopeFace.BottomRight, _, _);
+        tilePrefabs[3] = hcb.IndexGrid.slopeBuild.bind(hcb.IndexGrid.SlopeFace.TopLeft,     _, _);
+        tilePrefabs[4] = hcb.IndexGrid.slopeBuild.bind(hcb.IndexGrid.SlopeFace.TopRight,    _, _);
+        tilePrefabs[9] = hcb.IndexGrid.slopeBuild.bind(hcb.IndexGrid.SlopeFace.BottomLeft,  _, _);
+        tilePrefabs[10] = hcb.IndexGrid.slopeBuild.bind(hcb.IndexGrid.SlopeFace.BottomRight, _, _);
         var collisionTiles: Array<hcb.comp.col.CollisionShape> = hcb.IndexGrid.convertToCollisionShapes(indexGrid, null, ["Static"], tilePrefabs);
         for(tile in collisionTiles) {
             collisionWorld.addShape(tile);
         }
 
+        var floorRender: h2d.TileGroup = level.l_Floor.render();
+        drawTo.add(floorRender, 0);
+
         var collisionRender: h2d.TileGroup = level.l_Collisions.render();
-        scene.add(collisionRender, 0);
+        drawTo.add(collisionRender, 3);
 
         // * Pathfinding
         var gridSize = vec2(Math.floor(levelW/16), Math.floor(levelH/16));
@@ -110,13 +113,15 @@ class Room extends hcb.Room {
 
     private override function onUpdate() {
         ControlPanel.instance.update();
-        collisionWorld.representShapes(drawTo, 5);
+        //collisionWorld.representShapes(drawTo, 5);
 
         if(Key.isPressed(Key.ESCAPE) && !gameOver)
             paused = !paused;
 
-        if(paused && Key.isPressed(Key.Q))
-            Sys.exit(0);
+        if(paused && Key.isPressed(Key.Q)) {
+            Main.mainMenu.rebuild();
+            project.room = Main.mainMenu;
+        }
             
     }
 
@@ -139,10 +144,14 @@ class Room extends hcb.Room {
             }
 
             if(engineers == 0 || scientists == 0) {
-                gameOver = true;
-                pausedMessage = "Game Over\nAll Essential Units Lost";
-                paused = true;
+                gameOverMessage("Game Over\nAll Essential Units Lost");
             }
         }
+    }
+
+    public function gameOverMessage(message: String) {
+        gameOver = true;
+        pausedMessage = message;
+        paused = true;
     }
 }

@@ -16,17 +16,25 @@ class Research {
     public static final unitMoveSpeedUpgrade2: String       = "++ Unit Move Speed";
     public static final freezeFieldUpgrade: String          = "Freeze Field";
     public static final mortarUpgrade: String               = "Mortar Tower";
+    public static final buildingRangeUpgrade: String        = "+ Building Range";
+    public static final buildingFireRate: String            = "+ Building Fire Rate";
     public static final engineerRepairSpeedUpgrade: String  = "+ Engineer Repair Speed";
     public static final soldierHealSpeedUpgrade: String     = "+ Soldier Heal Speed";
+    public static final arbalestUpgrade: String             = "Arbalest Beamer";
     public static final timeBonusUpgrade: String            = "+ Time Between Waves";
     public static final timeBonusUpgrade2: String           = "++ Time Between Waves";
     public static final unitHpRegenUpgrade: String          = "Unit HP Regen";
     public static final soldierExplosiveAmmo: String        = "Soldier Explosive Ammo";
+    public static final buildingDamageUpgrade: String       = "+ Building Damage";
+    public static final teleporterUnlock: String            = "Escape Teleporter";
 
     public static var unitSpeedMult: Float = 1.0;
     public static var repairSpeedMult: Float = 1.0;
     public static var soldierHealSpeedMult: Float = 1.0;
     public static var timeBonus: Float = 0.0;
+    public static var towerDamageMult: Float = 1.0;
+    public static var towerRangeMult: Float = 1.0;
+    public static var towerFireRateMult: Float = 1.0;
 
     public static function initResearch() {
         // * Add research data
@@ -48,6 +56,20 @@ class Research {
                 pointsNeeded: 4,
                 required: [freezeFieldUpgrade]
             },
+            {   // * Building Range
+                name: buildingRangeUpgrade,
+                icon: Res.TexturePack.get("TowerRangeUpgradeIcon1"),
+                pointsNeeded: 3,
+                required: [mortarUpgrade],
+                onUnlock: () -> towerRangeMult = 1.15
+            },
+            {   // * Building Fire Rate
+                name: buildingFireRate,
+                icon: Res.TexturePack.get("TowerFireRateUpgradeIcon1"),
+                pointsNeeded: 3,
+                required: [mortarUpgrade],
+                onUnlock: () -> towerFireRateMult = 1.3
+            },
             {   // * Engineer Repair
                 name: engineerRepairSpeedUpgrade,
                 icon: Res.TexturePack.get("EngiSpeedUpgradeIcon1"),
@@ -61,6 +83,12 @@ class Research {
                 pointsNeeded: 3,
                 required: [unitMoveSpeedUpgrade],
                 onUnlock: () -> soldierHealSpeedMult = 1.25 
+            },
+            {   // * Arbalest
+                name: arbalestUpgrade,
+                icon: Res.TexturePack.get("ArbalestTowerUnlockIcon"),
+                pointsNeeded: 6,
+                required: [soldierHealSpeedUpgrade, mortarUpgrade]
             },
             {   // * Unit movement 2
                 name: unitMoveSpeedUpgrade2,
@@ -94,6 +122,19 @@ class Research {
                 icon: Res.TexturePack.get("ExplosiveAmmoUpgradeIcon"),
                 pointsNeeded: 6,
                 required: [soldierHealSpeedUpgrade]
+            },
+            {   // * Building Damage
+                name: buildingDamageUpgrade,
+                icon: Res.TexturePack.get("TowerDamageUpgradeIcon1"),
+                pointsNeeded: 6,
+                required: [arbalestUpgrade, buildingRangeUpgrade, buildingFireRate],
+                onUnlock: () -> towerDamageMult = 2
+            },
+            {   // * Escape Teleporter
+                name: teleporterUnlock,
+                icon: Res.TexturePack.get("TeleporterUnlockIcon"),
+                pointsNeeded: 10,
+                required: [soldierExplosiveAmmo, arbalestUpgrade, timeBonusUpgrade2]
             }
         ];
 

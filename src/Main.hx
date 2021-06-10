@@ -6,6 +6,7 @@ import hcb.Project;
 class Main extends hxd.App {
     private var project: hcb.Project;
     private var levelData: LdtkLevelData;
+    public static var mainMenu: MainMenu;
 
     public static var mouseHint: h2d.Text;
 
@@ -29,10 +30,10 @@ class Main extends hxd.App {
         levelData = new LdtkLevelData();
         setEntityPrefabs();
 
-        var testRoom: Room = new Room(levelData.all_levels.TestLevel);
-        testRoom.build();
+        mainMenu = new MainMenu([levelData.all_levels.Level1, levelData.all_levels.Level2]);
+        mainMenu.build();
 
-        project.room = testRoom;
+        project.room = mainMenu;
     }
 
     public function setEntityPrefabs() {

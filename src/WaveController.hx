@@ -45,8 +45,11 @@ class WaveController {
     private var tokens: Int = 0;
     private var enemyCount: Int = 0;
     private var maxEnemies: Int = 15;
+    private var enemiesSpawned: Float = 1;
 
     private var waveTurnoverEventListeners: Array<(Int) -> Void> = [];
+
+    public var enemyHealthMult: Float = 1.0;
 
     public static function startWaves(room: Room, spawnPositions: Array<Vec2>) {
         instance = new WaveController(room, spawnPositions);
@@ -65,42 +68,48 @@ class WaveController {
         wave++;
         tokens = 10 + wave*2;
         maxEnemies = Std.int(Math.min(maxEnemies + 1, 50));
-        spawnTimer.initialTime = Math.max(spawnTimer.initialTime - 0.1, 0.2);
+        spawnTimer.initialTime = Math.max(spawnTimer.initialTime - 0.1, 0.05);
+        enemiesSpawned = Math.min(5, enemiesSpawned + 0.2);
+        enemyHealthMult += 0.05;
         waveTurnoverEventcall(wave);
     }
 
     public function spawn(?t: String) {
         spawnTimer.reset();
+        
         if(enemyCount < maxEnemies) {
-            var possibleEnemies: Array<WaveEnemy> = [];
-            for(enemy in enemies) {
-                if(wave < enemy.minRound || tokens < enemy.cost)
-                    continue;
+            for(i in 0...Std.int(enemiesSpawned)) {
+                var possibleEnemies: Array<WaveEnemy> = [];
+                for(enemy in enemies) {
+                    if(wave < enemy.minRound || tokens < enemy.cost)
+                        continue;
 
-                for(i in 0...enemy.probability) {
-                    possibleEnemies.push(enemy);
+                    for(i in 0...enemy.probability) {
+                        possibleEnemies.push(enemy);
+                    }
                 }
-            }
-            Random.generator.shuffle(possibleEnemies);
+                Random.generator.shuffle(possibleEnemies);
 
-            if(possibleEnemies.length > 0) {
-                var enemy = possibleEnemies[0];
-                Random.generator.shuffle(spawnPositions);
-                var enemyEnt = new Entity(enemy.prefab(), spawnPositions[0], 1);
-                room.addEntity(enemyEnt);
+                if(possibleEnemies.length > 0) {
+                    var enemy = possibleEnemies[0];
+                    Random.generator.shuffle(spawnPositions);
+                    var enemyEnt = new Entity(enemy.prefab(), spawnPositions[0], 1);
+                    room.addEntity(enemyEnt);
 
-                var health: Health = cast enemyEnt.getComponentOfType(Health);
-                if(health != null)
-                    health.deathEventSubscribe(() -> enemyCount--);
-                
-                tokens -= enemy.cost;
-                enemyCount++;
-            }
-            else if(enemyCount == 0) {
-                tokens = 0;
-                if(waveTimer.timeRemaining == 0) {
-                    waveTimer.initialTime = 30 + Research.timeBonus;
-                    waveTimer.reset();
+                    var health: Health = cast enemyEnt.getComponentOfType(Health);
+                    if(health != null)
+                        health.deathEventSubscribe(() -> enemyCount--);
+                    
+                    tokens -= enemy.cost;
+                    enemyCount++;
+                }
+                else if(enemyCount == 0) {
+                    tokens = 0;
+                    if(waveTimer.timeRemaining == 0) {
+                        waveTimer.initialTime = 30 + Research.timeBonus;
+                        waveTimer.reset();
+                    }
+                    break;
                 }
             }
         }

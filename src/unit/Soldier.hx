@@ -36,7 +36,7 @@ class Soldier extends Unit {
     private var detectionCircle: CollisionCircle;
 
     private var firing: Bool = false;
-    private var fireDelay: Int = 30;
+    private var fireDelay: Int = 25;
     private var fireTimer: Int = 0;
 
     private final maxRange = 256;
@@ -279,7 +279,7 @@ class Soldier extends Unit {
     }
 
     public function fire() {
-        var damage: Float = 15;
+        var damage: Float = 20;
         var angle: Float = hxd.Math.radToDeg(shootAnimation.rotation);
         var direction: Vec2 = Vector.angleToVec2(angle, 1);
         var spawnPos: Vec2 = parentEntity.getPosition() + direction*10;

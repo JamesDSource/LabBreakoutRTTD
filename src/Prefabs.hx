@@ -59,7 +59,7 @@ class Prefabs {
 
     public static function generateWolf(): Array<Component> {
         var wolfComp = new Wolf("Wolf");
-        var health = new Health("Hp", 50);
+        var health = new Health("Hp", 50*WaveController.instance.enemyHealthMult);
         var navigation = new Navigation("Navi");
         var movement = new MoveableUnit("Move", 2.5, true);
         var animationPlayer = new AnimationPlayer("AnimationPlayer");
@@ -78,7 +78,7 @@ class Prefabs {
 
     public static function generateMonkey(): Array<Component> {
         var monkeyComp = new Monkey("Monkey");
-        var health = new Health("Hp", 80);
+        var health = new Health("Hp", 80*WaveController.instance.enemyHealthMult);
         var navigation = new Navigation("Navi");
         var movement = new MoveableUnit("Move", 1.5, true);
         var animationPlayer = new AnimationPlayer("AnimationPlayer");
@@ -97,7 +97,7 @@ class Prefabs {
 
     public static function generateAlligator() {
         var alligator = new Alligator("Alligator");
-        var health = new Health("Hp", 250);
+        var health = new Health("Hp", 300*WaveController.instance.enemyHealthMult);
         var navigation = new Navigation("Navi");
         var movement = new MoveableUnit("Move", 1, true);
         var animationPlayer = new AnimationPlayer("AnimationPlayer");

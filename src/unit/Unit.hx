@@ -14,7 +14,7 @@ class Unit extends Component {
     private var animationPlayer: AnimationPlayer;
     private var health: Health;
 
-    private var passiveHpRegen: Float = 0.005;
+    private var passiveHpRegen: Float = 0.01;
 
     private var setAnimation(default, set): Animation;
 

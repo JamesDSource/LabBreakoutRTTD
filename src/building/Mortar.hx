@@ -41,7 +41,11 @@ class Mortar extends Component {
     }
 
     private override function update() {
+        if(!building.isDone())
+            return;
+
         if(!room.hasEntity(target)) {
+            detectionCircle.radius = 192*Research.towerRangeMult;
             var result = room.collisionWorld.getCollisionAt(detectionCircle, parentEntity.getPosition(), "Enemy");
             if(result != null)
                 target = result.shape2.parentEntity;
@@ -50,7 +54,7 @@ class Mortar extends Component {
         }
 
         if(fireDelay > 0) {
-            fireDelay--;
+            fireDelay -= Research.towerFireRateMult;
             return;
         }
 
@@ -62,7 +66,7 @@ class Mortar extends Component {
         if(!room.hasEntity(target))
             return;
 
-        var explosion = new Entity(Prefabs.generateExplosive(damage, "Enemy"), target.getPosition(), 2);
+        var explosion = new Entity(Prefabs.generateExplosive(damage*Research.towerDamageMult, "Enemy"), target.getPosition(), 2);
         room.addEntity(explosion);
     }
 

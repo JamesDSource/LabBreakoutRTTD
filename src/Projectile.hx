@@ -20,6 +20,8 @@ class Projectile extends Component {
 
     private var alreadyDamaged: Array<Entity> = [];
 
+    private var life: Float = 10000;
+
     public function new(name: String, collider: CollisionShape, tagCheck: Array<String>, ?velocity: Vec2, piercing: Int = 1, ?onCollisionWith: (Entity) -> Void) {
         super(name);
         this.collider = collider;
@@ -36,6 +38,12 @@ class Projectile extends Component {
     }
 
     private override function update() {
+        life--;
+        if(life <= 0) {
+            parentEntity.remove();
+            return;
+        }
+
         parentEntity.move(velocity);
 
         var results: Array<CollisionInfo> = [];

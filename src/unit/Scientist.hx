@@ -54,9 +54,6 @@ class Scientist extends Unit {
             var progress: Float = Research.getProgress(currentResearch);
             selectable.status = 'Researching: $currentResearch (${Std.int(progress*100)}%)';
 
-            if(hxd.Key.isPressed(hxd.Key.MOUSE_MIDDLE))
-                Research.addProgress(currentResearch);
-
             if(Research.isUnlocked(currentResearch))
                 currentResearch = null;
         }
