@@ -145,7 +145,7 @@ class Engineer extends Unit {
                 if(d < 16) {
                     room.removeEntity(destroyEnt);
                     var buidlingComp: Building = cast destroyEnt.getComponentOfType(Building);
-                    ControlPanel.instance.metals += buidlingComp.cost;
+                    ControlPanel.instance.metals += Std.int(buidlingComp.cost*0.7);
                     destroyEnt = null;
                     state = Idle;
                 }

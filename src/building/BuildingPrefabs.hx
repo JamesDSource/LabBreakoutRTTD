@@ -41,7 +41,7 @@ class BuildingPrefabs {
             {
                 name: "Mortar Tower",
                 cost: 150,
-                entityPrefab: null,
+                entityPrefab: generateMortar,
                 icon: Res.TexturePack.get("MortarIcon"),
                 researchNeeded: Research.mortarUpgrade
             }
@@ -82,6 +82,8 @@ class BuildingPrefabs {
 
     public static function generateMortar(cost: Int): Array<Component> {
         var components = generateBuilding(cost, 60, 12);
+        var mortar = new Mortar("Mortar");
+        components.push(mortar);
         return components;
     }
 }

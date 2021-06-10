@@ -54,7 +54,7 @@ class WaveController {
 
     private function new(room: Room, spawnPositions: Array<Vec2>) {
         this.room = room;
-        waveTimer = new Timer("Wave", 10, nextWave);
+        waveTimer = new Timer("Wave", 60, nextWave);
         spawnTimer = new Timer("Spawn", 2, spawn);
         room.addTimer(waveTimer);
         room.addTimer(spawnTimer);
