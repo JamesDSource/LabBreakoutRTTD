@@ -92,7 +92,7 @@ class Sentry extends Component {
                 10,
                 1,
                 velocity,
-                "Enemy",
+                ["Enemy"],
                 collider,
                 Res.TexturePack.get("Bullet")
             ),

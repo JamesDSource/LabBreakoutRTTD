@@ -8,7 +8,7 @@ import VectorMath;
 
 class Projectile extends Component {
     public var collider: CollisionShape;
-    public var tagCheck: String;
+    public var tagCheck: Array<String>;
     private var velocity: Vec2;
     private var piercing: Int;
 
@@ -20,7 +20,7 @@ class Projectile extends Component {
 
     private var alreadyDamaged: Array<Entity> = [];
 
-    public function new(name: String, collider: CollisionShape, tagCheck: String, ?velocity: Vec2, piercing: Int = 1, ?onCollisionWith: (Entity) -> Void) {
+    public function new(name: String, collider: CollisionShape, tagCheck: Array<String>, ?velocity: Vec2, piercing: Int = 1, ?onCollisionWith: (Entity) -> Void) {
         super(name);
         this.collider = collider;
         this.tagCheck = tagCheck;
@@ -39,7 +39,8 @@ class Projectile extends Component {
         parentEntity.move(velocity);
 
         var results: Array<CollisionInfo> = [];
-        room.collisionWorld.getCollisionAt(collider, results, tagCheck);
+        for(tag in tagCheck)
+            room.collisionWorld.getCollisionAt(collider, results, tag);
         for(result in results) {
             var collidingEnt = result.shape2.parentEntity;
             if(collidingEnt == null || alreadyDamaged.contains(collidingEnt))

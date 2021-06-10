@@ -28,7 +28,6 @@ class Placeable extends Component {
     public function new(name: String, collisionShape: CollisionShape) {
         super(name);
         this.collisionShape = collisionShape;
-        collisionShape.tags.push("Building");
     }
 
     private override function init() {

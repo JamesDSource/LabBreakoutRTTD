@@ -28,24 +28,14 @@ class Wolf extends Enemy {
     private var prevTargetPos: Vec2 = vec2(0, 0);
     private var randomUnit: Entity = null;
 
-    private var animationPlayer: AnimationPlayer;
     private var runAnimation: Animation;
     private var attackAnimation: Animation;
 
     private var collisionBox: CollisionPolygon;
 
-    private var setAnimation(default, set): Animation;
-
     private var damage: Float = 5;
 
-    private function set_setAnimation(setAnimation: Animation): Animation {
-        if(this.setAnimation != setAnimation) {
-            animationPlayer.setAnimationSlot("Main", setAnimation);
-            this.setAnimation = setAnimation;
-        }
-        
-        return setAnimation;
-    }
+    
 
     private function set_state(state: WolfState): WolfState {
 
@@ -63,7 +53,6 @@ class Wolf extends Enemy {
         parentEntity.onMoveEventSubscribe(onMove);
 
         detectionCircle = new CollisionCircle("Detection", detectionRadius);
-        animationPlayer = cast parentEntity.getComponentOfType(AnimationPlayer);
 
         runAnimation = new Animation(Res.TexturePack.get("WolfRun"), 4, OriginPoint.Center);
         attackAnimation = new Animation(Res.TexturePack.get("WolfAttack"), 3, 6, OriginPoint.Center);

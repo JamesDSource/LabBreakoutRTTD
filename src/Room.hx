@@ -1,3 +1,8 @@
+import unit.Scientist;
+import unit.Engineer;
+import hxd.Window;
+import h3d.Engine;
+import hxd.Key;
 import unit.Unit;
 import hxd.Res;
 import hcb.pathfinding.PathfindingGrid;
@@ -21,6 +26,16 @@ class Room extends hcb.Room {
 
     public var playerController: Entity;
 
+    private var gameOver: Bool = false;
+    private var pausedText: h2d.Text;
+    public var pausedMessage: String = "Game Paused";
+
+    private override function set_paused(paused:Bool):Bool {
+        drawTo.filter = paused ? new h2d.filter.Blur() : null;
+        pausedText.text = paused ? pausedMessage + "\nPress Q to exit" : "";
+        return super.set_paused(paused);
+    }
+
     public function new(level: LdtkLevelData.LdtkLevelData_Level) {
         super();
         this.level = level;
@@ -43,12 +58,20 @@ class Room extends hcb.Room {
 
         scene.scaleMode = ScaleMode.LetterBox(width, height, false, ScaleModeAlign.Center, ScaleModeAlign.Center);
 
+        
         // * Control Panel
         divider = view.pixelY + view.height;
         var panel = ControlPanel.instance;
         panel.x = view.pixelX;
         panel.y = divider;
         scene.add(panel, 1);
+
+        // * Wave controller
+        var spawns: Array<Vec2> = [];
+        for(spawner in level.l_Entities.all_Spawner) {
+            spawns.push(vec2(spawner.pixelX, spawner.pixelY));
+        }
+        WaveController.startWaves(this, spawns);
 
         // * Collisions
         var indexGrid: hcb.IndexGrid.IGrid = hcb.IndexGrid.ldtkTilesConvert(level.l_Collisions);
@@ -75,16 +98,26 @@ class Room extends hcb.Room {
         addEntity(playerController);
         LdtkEntities.ldtkAddEntities(this, cast level.l_Entities.getAllUntyped(), 1);
 
-        var spawns: Array<Vec2> = [];
-        for(spawner in level.l_Entities.all_Spawner) {
-            spawns.push(vec2(spawner.pixelX, spawner.pixelY));
-        }
-        WaveController.startWaves(this, spawns);
+        // * Pause message
+        var f = hxd.res.DefaultFont.get();
+        pausedText = new h2d.Text(f);
+        pausedText.textAlign = h2d.Text.Align.Center;
+        pausedText.scaleX = pausedText.scaleY = 3;
+        pausedText.x = view.pixelX + view.width/2;
+        pausedText.y = view.pixelY + view.height/2;
+        scene.add(pausedText, 5);
     }
 
     private override function onUpdate() {
         ControlPanel.instance.update();
-        collisionWorld.representShapes(drawTo, 5);
+        //collisionWorld.representShapes(drawTo, 5);
+
+        if(Key.isPressed(Key.ESCAPE) && !gameOver)
+            paused = !paused;
+
+        if(paused && Key.isPressed(Key.Q))
+            Sys.exit(0);
+            
     }
 
     private override function entityAdded(entity: Entity) {
@@ -93,7 +126,23 @@ class Room extends hcb.Room {
     }
 
     private override function entityremoved(entity:Entity) {
-        if(entity.getComponentOfType(Unit) != null)
+        if(entity.getComponentOfType(Unit) != null) {
             units.remove(entity);
+
+            var engineers: Int = 0;
+            var scientists: Int = 0;
+            for(unit in units) {
+                if(unit.getComponentOfType(Engineer) != null)
+                    engineers++;
+                if(unit.getComponentOfType(Scientist) != null)
+                    scientists++;
+            }
+
+            if(engineers == 0 || scientists == 0) {
+                gameOver = true;
+                pausedMessage = "Game Over\nAll Essential Units Lost";
+                paused = true;
+            }
+        }
     }
 }

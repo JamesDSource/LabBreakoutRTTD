@@ -18,6 +18,12 @@ class WaveController {
             probability: 10,
             cost: 1,
             minRound: 1
+        },
+        {
+            prefab: Prefabs.generateMonkey,
+            probability: 10,
+            cost: 1,
+            minRound: 3
         }
     ];
 
@@ -33,13 +39,15 @@ class WaveController {
     private var enemyCount: Int = 0;
     private var maxEnemies: Int = 15;
 
+    private var waveTurnoverEventListeners: Array<(Int) -> Void> = [];
+
     public static function startWaves(room: Room, spawnPositions: Array<Vec2>) {
         instance = new WaveController(room, spawnPositions);
     }
 
     private function new(room: Room, spawnPositions: Array<Vec2>) {
         this.room = room;
-        waveTimer = new Timer("Wave", 2, nextWave);
+        waveTimer = new Timer("Wave", 60, nextWave);
         spawnTimer = new Timer("Spawn", 2, spawn);
         room.addTimer(waveTimer);
         room.addTimer(spawnTimer);
@@ -51,6 +59,7 @@ class WaveController {
         tokens = 10 + wave*2;
         maxEnemies = Std.int(Math.min(maxEnemies + 1, 50));
         spawnTimer.initialTime = Math.max(spawnTimer.initialTime - 0.1, 0.2);
+        waveTurnoverEventcall(wave);
     }
 
     public function spawn(?t: String) {
@@ -82,13 +91,30 @@ class WaveController {
             }
             else if(enemyCount == 0) {
                 tokens = 0;
-                if(waveTimer.timeRemaining == 0)
+                if(waveTimer.timeRemaining == 0) {
+                    waveTimer.initialTime = 30;
                     waveTimer.reset();
+                }
             }
         }
     }
 
     public function getTimeLeft(): Float {
         return waveTimer.timeRemaining;
+    }
+
+    // & Wave turnover event
+    public function waveTurnoverEventSubscribe(callBack: (Int) -> Void) {
+        waveTurnoverEventListeners.push(callBack);
+    }
+
+    public function waveTurnoverEventRemove(callBack: (Int) -> Void): Bool {
+        return waveTurnoverEventListeners.remove(callBack);
+    }
+
+    private function waveTurnoverEventcall(wave: Int) {
+        for(listner in waveTurnoverEventListeners) {
+            listner(wave);
+        }
     }
 }

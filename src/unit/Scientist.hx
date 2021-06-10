@@ -16,6 +16,8 @@ class Scientist extends Unit {
     private override function init() {
         super.init();
 
+        WaveController.instance.waveTurnoverEventSubscribe(onWaveTurnover);
+
         body = Res.TexturePack.get("ScientistDead");
 
         var researchAction: Action = {
@@ -85,5 +87,10 @@ class Scientist extends Unit {
                 currentResearch = ab.action.name;
             }
         );
+    }
+
+    private function onWaveTurnover(?wave: Int) {
+        if(currentResearch != null)
+            Research.addProgress(currentResearch);
     }
 }

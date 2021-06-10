@@ -12,6 +12,8 @@ class Building extends Component {
     private var progress: Float = 0;
     private var done: Bool = false;
 
+    private var health: Health;
+
     public static final blue = new hxsl.Types.Vec(0.1, 0.1, 0.9);
     public static final red = new hxsl.Types.Vec(0.9, 0.1, 0.1);
 
@@ -24,6 +26,8 @@ class Building extends Component {
     private override function init() {
         placeable = cast parentEntity.getComponentOfType(Placeable);
         placeable.placementCanceled = placementCanceled;
+        health = cast parentEntity.getComponentOfType(Health);
+        health.deathEventSubscribe(() -> parentEntity.remove());
     }
 
     private function placementCanceled() {

@@ -22,14 +22,15 @@ enum EngineerState {
 class Engineer extends Unit {
     public static var fucknuggets: Int = 5;
 
-    private var state: EngineerState = EngineerState.Idle;
+    private var state: EngineerState = Idle;
     private var buildSpeed: Float = 0.002;
 
     public var buildEnt(default, set): Entity = null;
     private var buildBuilding: Building = null;
 
     public var repairEnt: Entity = null;
-    private var repaurHp: Health = null;
+    private var repairHp: Health = null;
+    private var repairAmount: Float = 0.1;
 
     public var destroyEnt: Entity = null;
 
@@ -100,12 +101,12 @@ class Engineer extends Unit {
 
     private function stateMachine() {
         switch(state) {
-            case EngineerState.Idle:
+            case Idle:
                 selectable.status = idlingStatus;
-            case EngineerState.Build:
+            case Build:
                 selectable.status = buildingStatus;
                 if(!room.hasEntity(buildEnt)) {
-                    state = EngineerState.Idle;
+                    state = Idle;
                     return;
                 }
 
@@ -114,15 +115,29 @@ class Engineer extends Unit {
                     selectable.status = "Building";
                     buildBuilding.addProgress(buildSpeed);
                     if(buildBuilding.isDone())
-                        state = EngineerState.Idle;
+                        state = Idle;
                 }
-            case EngineerState.Repair:
+            case Repair:
                 selectable.status = repairStatus;
-            case EngineerState.Destroy:
+
+                if(!room.hasEntity(repairEnt)) {
+                    state = Idle;
+                    return;
+                }
+
+                var d = distance(parentEntity.getPosition(), repairEnt.getPosition());
+                if(d < 16) {
+                    repairHp.offsetHp(repairAmount*Research.repairSpeedMult);
+                    if(repairHp.hp == repairHp.maxHp) {
+                        state = Idle;
+                        return;
+                    }
+                }
+            case Destroy:
                 selectable.status = destroyingStatus;
 
                 if(!room.hasEntity(destroyEnt)) {
-                    state = EngineerState.Idle;
+                    state = Idle;
                     return;
                 }
 
@@ -132,14 +147,14 @@ class Engineer extends Unit {
                     var buidlingComp: Building = cast destroyEnt.getComponentOfType(Building);
                     ControlPanel.instance.metals += buidlingComp.cost;
                     destroyEnt = null;
-                    state = EngineerState.Idle;
+                    state = Idle;
                 }
         }
     }
 
     private function animationStates() {
         if(movement.hasStopped()) {
-            if(state == EngineerState.Build)
+            if(state == Build || state == Repair)
                 setAnimation = interfaceAnimation;
             else
                 setAnimation = idleAnimation;
@@ -164,7 +179,25 @@ class Engineer extends Unit {
     }
 
     private function repairCallback() {
+        unitController.point(
+            (results) ->  {
+                for(result in results) {
+                    if(result.parentEntity == null)
+                        continue;
 
+                    if(result.parentEntity.getComponentOfType(Building) != null) {
+                        var hpComp: Health = cast result.parentEntity.getComponentOfType(Health);
+                        if(hpComp != null && hpComp.hp < hpComp.maxHp) {
+                            state = Repair;
+                            repairEnt = result.parentEntity;
+                            repairHp = hpComp;
+                            movement.setTarget(repairEnt.getPosition());
+                        }
+                    }
+
+                }
+            }
+        );
     }
 
     private function removeCallback() {
@@ -177,7 +210,7 @@ class Engineer extends Unit {
                     if(result.parentEntity.getComponentOfType(Building) != null) {
                         destroyEnt = result.parentEntity;
                         movement.setTarget(destroyEnt.getPosition());
-                        state = EngineerState.Destroy;
+                        state = Destroy;
                     }
 
                 }
@@ -195,6 +228,14 @@ class Engineer extends Unit {
             if(buildingComp != null && !buildingComp.isDone()) {
                 buildEnt = result.parentEntity;
                 break;
+            }
+            else if(buildingComp != null) {
+                var hpComp: Health = cast result.parentEntity.getComponentOfType(Health);
+                if(hpComp != null && hpComp.hp < hpComp.maxHp) {
+                    state = Repair;
+                    repairEnt = result.parentEntity;
+                    repairHp = hpComp;
+                }
             }
         }
     }

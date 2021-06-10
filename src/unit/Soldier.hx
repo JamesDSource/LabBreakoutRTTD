@@ -298,7 +298,7 @@ class Soldier extends Unit {
                 damage,
                 1,
                 velocity,
-                "Enemy",
+                ["Enemy"],
                 collider,
                 Res.TexturePack.get("Bullet"),
                 onCollisionWith

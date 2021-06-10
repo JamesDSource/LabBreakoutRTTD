@@ -48,6 +48,7 @@ class BuildingPrefabs {
         var building = new Building("Tower", cost);
         var animationPlayer = new AnimationPlayer("Anim Player");
         var health = new Health("Hp", hp);
+        collider.tags.push("Building");
 
         return [
             collider,

@@ -121,7 +121,7 @@ class UnitController extends hcb.comp.Component {
                 }
 
             case ControllerMode.Place:
-                if(Key.isPressed(Key.ESCAPE)) {
+                if(Key.isPressed(Key.MOUSE_RIGHT)) {
                     room.removeEntity(placeable.parentEntity);
                     placeable = null;
                 }
@@ -147,7 +147,7 @@ class UnitController extends hcb.comp.Component {
                 }
                 
             case ControllerMode.Point:
-                if(Key.isPressed(Key.ESCAPE)) {
+                if(Key.isPressed(Key.MOUSE_RIGHT)) {
                     pointCallback = null;
                 }
 
@@ -174,9 +174,6 @@ class UnitController extends hcb.comp.Component {
     }
 
     private function getSelectionInputs(mousePos: Vec2) {
-        if(Key.isPressed(Key.ESCAPE))
-            unselectAll();
-
         // * On pressed
         if(Key.isPressed(Key.MOUSE_LEFT)) 
             initialDragPos = mousePos.clone();

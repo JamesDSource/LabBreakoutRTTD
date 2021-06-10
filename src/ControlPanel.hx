@@ -244,14 +244,6 @@ class ControlPanel extends Object {
 
         var buttonsChecking: Array<ActionButton> = querying == null ? actionButtons : queryButtons;
 
-        if(querying != null && hxd.Key.isPressed(hxd.Key.ESCAPE)) {
-            querying = null;
-            queryActions.removeChildren();
-            queryButtons = [];
-            queryActions.visible = false;
-            selectedActions.visible = true;
-        }
-
         for(button in buttonsChecking) {
             var inBounds: Bool = Collisions.pointInAABB(vec2(mouseX, mouseY), button.bounds.min, button.bounds.max);
             

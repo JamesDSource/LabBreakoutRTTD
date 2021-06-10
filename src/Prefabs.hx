@@ -59,7 +59,7 @@ class Prefabs {
 
     public static function generateWolf(): Array<Component> {
         var wolfComp = new Wolf("Wolf");
-        var health = new Health("Hp", 40);
+        var health = new Health("Hp", 50);
         var navigation = new Navigation("Navi");
         var movement = new MoveableUnit("Move", 2.5, true);
         var animationPlayer = new AnimationPlayer("AnimationPlayer");
@@ -76,7 +76,26 @@ class Prefabs {
         ];
     }
 
-    public static function generateStdBullet(damage: Float = 10, piercing: Int = 1, velocity: Vec2, tagCheck: String, collider: CollisionShape, tile: h2d.Tile, frames: Int = 1, speed: Int = 10, ?onCollisionWith: (Entity) -> Void): Array<Component> {
+    public static function generateMonkey(): Array<Component> {
+        var monkeyComp = new Monkey("Monkey");
+        var health = new Health("Hp", 80);
+        var navigation = new Navigation("Navi");
+        var movement = new MoveableUnit("Move", 1.5, true);
+        var animationPlayer = new AnimationPlayer("AnimationPlayer");
+        var collisionCircle = new CollisionCircle("Circle", 8);
+        collisionCircle.tags.push("Enemy");
+        
+        return [
+            monkeyComp,
+            health,
+            navigation,
+            movement,
+            animationPlayer,
+            collisionCircle
+        ];
+    }
+
+    public static function generateStdBullet(damage: Float = 10, piercing: Int = 1, velocity: Vec2, tagCheck: Array<String>, collider: CollisionShape, tile: h2d.Tile, frames: Int = 1, speed: Int = 10, ?onCollisionWith: (Entity) -> Void): Array<Component> {
         var components: Array<Component> = [];
         
         var projectile = new Projectile("Proj", collider, tagCheck, velocity, piercing, onCollisionWith);
