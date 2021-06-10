@@ -29,6 +29,8 @@ class MoveableUnit extends Component {
 
     private var collider: CollisionShape;
 
+    private var stack: Bool;
+
     private function get_movementSpeed(): Float {
         var spd = baseSpeed;
         if(parentEntity.getComponentOfType(Unit) != null)
@@ -36,11 +38,12 @@ class MoveableUnit extends Component {
         return spd*tempSpeedMod;
     }
 
-    public function new(name: String, movementSpeed: Float = 2, detectionRadius: Float = 16, ?collider: CollisionShape) {
+    public function new(name: String, movementSpeed: Float = 2, detectionRadius: Float = 16, ?collider: CollisionShape, stack: Bool = false) {
         super(name);
         this.baseSpeed = movementSpeed;
         this.detectionRadius = detectionRadius;
         this.collider = collider;
+        this.stack = stack;
     }
 
     private override function init() {
@@ -63,14 +66,14 @@ class MoveableUnit extends Component {
 
         if(!stopped) {
             var collisions: Array<CollisionInfo> = [];
-            room.collisionWorld.getCollisionAt(detectionCircle, collisions, pos, "Unit");
+            room.collisionWorld.getCollisionAt(detectionCircle, collisions, pos);
             for(collision in collisions) {
-                if(collision.shape2.parentEntity == parentEntity)
+                if(collision.shape2.parentEntity == null || collision.shape2.parentEntity == parentEntity)
                     continue;
 
                 var movementComp: MoveableUnit = cast collision.shape2.parentEntity.getComponentOfType(MoveableUnit);
                 if(movementComp != null) {
-                    if(movementComp.hasStopped() && movementComp.getTarget() != null && movementComp.getTarget() == target) {
+                    if(movementComp.hasStopped() && movementComp.getTarget() != null && movementComp.getTarget() == target && !stack) {
                         path = null;
                         stopped = true;
                     }

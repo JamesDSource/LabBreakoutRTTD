@@ -1,3 +1,4 @@
+import unit.Unit;
 import hxd.Res;
 import hcb.pathfinding.PathfindingGrid;
 import hcb.Entity;
@@ -15,6 +16,8 @@ class Room extends hcb.Room {
 
     public static final width: Int = 960;
     public static final height: Int = 540;
+
+    public var units(default, null): Array<Entity> = [];
 
     public var playerController: Entity;
 
@@ -72,12 +75,20 @@ class Room extends hcb.Room {
         addEntity(playerController);
         LdtkEntities.ldtkAddEntities(this, cast level.l_Entities.getAllUntyped(), 1);
 
-        var wolf = new Entity(Prefabs.generateWolf(), vec2(300, 200));
-        addEntity(wolf);
+        var spawns: Array<Vec2> = [];
+        for(spawner in level.l_Entities.all_Spawner) {
+            spawns.push(vec2(spawner.pixelX, spawner.pixelY));
+        }
+        WaveController.startWaves(this, spawns);
     }
 
     private override function onUpdate() {
         ControlPanel.instance.update();
         //collisionWorld.representShapes(drawTo, 5);
+    }
+
+    private override function entityAdded(entity: Entity) {
+        if(entity.getComponentOfType(Unit) != null)
+            units.push(entity);
     }
 }

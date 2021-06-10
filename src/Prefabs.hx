@@ -61,7 +61,7 @@ class Prefabs {
         var wolfComp = new Wolf("Wolf");
         var health = new Health("Hp", 40);
         var navigation = new Navigation("Navi");
-        var movement = new MoveableUnit("Move", 2.5);
+        var movement = new MoveableUnit("Move", 2.5, true);
         var animationPlayer = new AnimationPlayer("AnimationPlayer");
         var collisionBox = CollisionPolygon.rectangle("Rect", 25, 8, OriginPoint.Center);
         collisionBox.tags.push("Enemy");

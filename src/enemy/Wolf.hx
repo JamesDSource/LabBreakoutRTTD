@@ -30,8 +30,22 @@ class Wolf extends Enemy {
 
     private var animationPlayer: AnimationPlayer;
     private var runAnimation: Animation;
+    private var attackAnimation: Animation;
 
     private var collisionBox: CollisionPolygon;
+
+    private var setAnimation(default, set): Animation;
+
+    private var damage: Float = 5;
+
+    private function set_setAnimation(setAnimation: Animation): Animation {
+        if(this.setAnimation != setAnimation) {
+            animationPlayer.setAnimationSlot("Main", setAnimation);
+            this.setAnimation = setAnimation;
+        }
+        
+        return setAnimation;
+    }
 
     private function set_state(state: WolfState): WolfState {
 
@@ -52,13 +66,18 @@ class Wolf extends Enemy {
         animationPlayer = cast parentEntity.getComponentOfType(AnimationPlayer);
 
         runAnimation = new Animation(Res.TexturePack.get("WolfRun"), 4, OriginPoint.Center);
-        animationPlayer.addAnimationSlot("Main", 0, runAnimation);
+        attackAnimation = new Animation(Res.TexturePack.get("WolfAttack"), 3, 6, OriginPoint.Center);
+        attackAnimation.onFrameEventSubscribe(2, attack);
+        attackAnimation.onAnimEnd = () -> if(state == WolfState.Attack) state = WolfState.Advance;
+        animationPlayer.addAnimationSlot("Main", 0);
+        setAnimation = runAnimation;
 
         collisionBox = cast parentEntity.getComponentOfType(CollisionPolygon);
     }
 
     private override function update() {
         stateMachine();
+        animationStates();
     }
 
     private function stateMachine() {
@@ -101,25 +120,53 @@ class Wolf extends Enemy {
 
                 if(prevTargetPos != targetUnit.getPosition()) 
                     movement.setTarget(targetUnit.getPosition());
+
+                detectionCircle.radius = attackRadius;
+                var results: Array<CollisionInfo> = [];
+                room.collisionWorld.getCollisionAt(detectionCircle, results, parentEntity.getPosition(), "Unit");
+                for(result in results) {
+                    if(result.shape2.parentEntity == targetUnit) {
+                        state = WolfState.Attack;
+                        attackAnimation.currentFrame = 0;
+                        break;
+                    }
+                }
             case Attack:
+                movement.clearPath();
+                if(targetUnit != null) {
+                    var ang = Vector.getAngle(targetUnit.getPosition() - parentEntity.getPosition());
+                    rotate(ang);
+                }
         }
     }
 
-    private function getRandomUnit(): Entity {
-        var allEntites = room.getEntities();
-
-        for(entity in allEntites) {
-            if(entity.getComponentOfType(Unit) != null) {
-                return entity;
-            }
+    private function attack() {
+        detectionCircle.radius = 2;
+        var pos = parentEntity.getPosition() + Vector.angleToVec2(collisionBox.rotation, 13);
+        var result = room.collisionWorld.getCollisionAt(detectionCircle, pos, "Unit");
+        if(result != null && result.shape2.parentEntity != null) {
+            var healthComp: Health = cast result.shape2.parentEntity.getComponentOfType(Health);
+            if(healthComp != null)
+                healthComp.offsetHp(-damage);
         }
+    }
 
-        return null;
+    private function animationStates() {
+        if(state == WolfState.Attack) 
+            setAnimation = attackAnimation;
+        else 
+            setAnimation = runAnimation;
     }
 
     private function onMove(to: Vec2, from: Vec2) {
         var ang = Vector.getAngle(to - from);
-        runAnimation.rotation = hxd.Math.degToRad(ang);
-        collisionBox.rotation = ang;
+        rotate(ang);
+    }
+
+    private function rotate(angle: Float) {
+        var radAngle = hxd.Math.degToRad(angle);
+        runAnimation.rotation = radAngle;
+        attackAnimation.rotation = radAngle;
+        collisionBox.rotation = angle;
     }
 }

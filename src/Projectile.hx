@@ -18,6 +18,8 @@ class Projectile extends Component {
     private var animationPlayer: AnimationPlayer;
     private var sprite: Sprite;
 
+    private var alreadyDamaged: Array<Entity> = [];
+
     public function new(name: String, collider: CollisionShape, tagCheck: String, ?velocity: Vec2, piercing: Int = 1, ?onCollisionWith: (Entity) -> Void) {
         super(name);
         this.collider = collider;
@@ -40,11 +42,13 @@ class Projectile extends Component {
         room.collisionWorld.getCollisionAt(collider, results, tagCheck);
         for(result in results) {
             var collidingEnt = result.shape2.parentEntity;
-            if(collidingEnt == null)
+            if(collidingEnt == null || alreadyDamaged.contains(collidingEnt))
                 continue;
 
             if(onCollisionWith != null)
                 onCollisionWith(collidingEnt);
+            
+            alreadyDamaged.push(collidingEnt);
 
             piercing--;
             if(piercing <= 0) {

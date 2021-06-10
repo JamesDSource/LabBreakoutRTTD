@@ -48,6 +48,8 @@ class ControlPanel extends Object {
     private var querying: (ActionButton) -> Void = null;
 
     private var gameInfoFrame: h2d.ScaleGrid;
+    private var waveNumber: h2d.Text;
+    private var waveTime: h2d.Text;
     private var reconditeCounter: h2d.Text;
 
     public static final instance: ControlPanel = new ControlPanel();
@@ -150,6 +152,21 @@ class ControlPanel extends Object {
 
         var infoTextMargin: Float = 15;
         var infoTextPos: Float = 5;
+        
+        waveNumber = new h2d.Text(font, gameInfoFrame);
+        waveNumber.textAlign = h2d.Text.Align.Left;
+        waveNumber.x = infoTextMargin;
+        waveNumber.y = infoTextPos;
+        waveNumber.text = "Wave: 0";
+        infoTextPos += infoTextMargin;
+
+        waveTime = new h2d.Text(font, gameInfoFrame);
+        waveTime.textAlign = h2d.Text.Align.Left;
+        waveTime.x = infoTextMargin;
+        waveTime.y = infoTextPos;
+        waveTime.text = "Next Wave: ";
+        infoTextPos += infoTextMargin;
+
         reconditeCounter = new h2d.Text(font, gameInfoFrame);
         reconditeCounter.textAlign = h2d.Text.Align.Left;
         reconditeCounter.x = infoTextMargin;
@@ -201,6 +218,12 @@ class ControlPanel extends Object {
             }
         }
         descriptionText.text = descText;
+
+        // * Wave data
+        if(WaveController.instance != null) {
+            waveNumber.text = 'Wave: ${WaveController.instance.wave}';
+            waveTime.text = 'Next Wave In: ${Std.int(WaveController.instance.getTimeLeft())}';
+        }
     }
 
     public function getMouseInputs(mouseX: Float, mouseY: Float) {
