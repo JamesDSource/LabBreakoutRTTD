@@ -65,6 +65,8 @@ class Soldier extends Unit {
     private override function init() {
         super.init();
 
+        body = Res.TexturePack.get("SoldierDead");
+
         parentEntity.onMoveEventSubscribe(onMove);
 
         var attackAction: Action = {

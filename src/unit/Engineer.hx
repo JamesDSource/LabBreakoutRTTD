@@ -58,6 +58,8 @@ class Engineer extends Unit {
     private override function init() {
         super.init();
 
+        body = Res.TexturePack.get("EngineerDead");
+
         selectable.actions.push({
             name: "Build",
             icon: Res.TexturePack.get("BuildActionIcon"),

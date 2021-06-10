@@ -84,11 +84,16 @@ class Room extends hcb.Room {
 
     private override function onUpdate() {
         ControlPanel.instance.update();
-        //collisionWorld.representShapes(drawTo, 5);
+        collisionWorld.representShapes(drawTo, 5);
     }
 
     private override function entityAdded(entity: Entity) {
         if(entity.getComponentOfType(Unit) != null)
             units.push(entity);
+    }
+
+    private override function entityremoved(entity:Entity) {
+        if(entity.getComponentOfType(Unit) != null)
+            units.remove(entity);
     }
 }

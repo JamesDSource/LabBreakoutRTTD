@@ -16,6 +16,8 @@ class Scientist extends Unit {
     private override function init() {
         super.init();
 
+        body = Res.TexturePack.get("ScientistDead");
+
         var researchAction: Action = {
             name: "Research",
             icon: Res.TexturePack.get("ResearchActionIcon"),

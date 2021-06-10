@@ -1,5 +1,6 @@
 package unit;
 
+import hcb.Entity;
 import hcb.comp.anim.Animation;
 import hcb.comp.anim.AnimationPlayer;
 import hcb.comp.Component;
@@ -17,6 +18,8 @@ class Unit extends Component {
 
     private var setAnimation(default, set): Animation;
 
+    public var body: h2d.Tile = null;
+
     private function set_setAnimation(setAnimation: Animation): Animation {
         if(this.setAnimation != setAnimation) {
             this.setAnimation = setAnimation;
@@ -32,6 +35,7 @@ class Unit extends Component {
         animationPlayer = cast parentEntity.getComponentOfType(AnimationPlayer);
         animationPlayer.addAnimationSlot("Main", 0);
         health = cast parentEntity.getComponentOfType(Health);
+        health.deathEventSubscribe(dead);
     }
 
     private override function update() {
@@ -43,5 +47,11 @@ class Unit extends Component {
     private override function addedToRoom() {
         roomExt = cast room;
         unitController = cast roomExt.playerController.getComponentOfType(UnitController);
+    }
+
+    private function dead() {
+        var body = new Entity(Prefabs.generateBody(body), parentEntity.getPosition(), 0);
+        room.addEntity(body);
+        parentEntity.remove();
     }
 }

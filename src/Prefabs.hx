@@ -98,10 +98,16 @@ class Prefabs {
         return components;
     }
 
-    public static function generateExplosive(damage: Float, tagCheck: String) {
+    public static function generateExplosive(damage: Float, tagCheck: String): Array<Component> {
         return [
             new AnimationPlayer("Anim"),
             new Explosion("Explosion", tagCheck, damage, 12)
+        ];
+    }
+
+    public static function generateBody(tile: h2d.Tile): Array<Component> {
+        return [
+            new Sprite("Spr", tile, 0, OriginPoint.Center)
         ];
     }
 }

@@ -175,8 +175,11 @@ class ControlPanel extends Object {
     }
 
     public function offsetSelectedIndex(offset: Int) {
-        if(selected == null || selected.length == 0)
+        if(selected == null || selected.length == 0) {
+            selected = null;
+            selectedInst = null;
             return;
+        }
 
         selectedIndex += offset;
         if(selectedIndex < 0)
@@ -194,6 +197,15 @@ class ControlPanel extends Object {
     }
 
     public function update() {
+        if(selected != null) {
+            for(unit in selected.copy()) {
+                if(unit.parentEntity.room == null) {
+                    selected.remove(unit);
+                    offsetSelectedIndex(0);
+                }
+            }
+        }
+
         var buttonsChecking: Array<ActionButton> = querying == null ? actionButtons : queryButtons;
         for(button in buttonsChecking) {
             var icon: h2d.Bitmap = cast button.frame.getChildAt(0);
