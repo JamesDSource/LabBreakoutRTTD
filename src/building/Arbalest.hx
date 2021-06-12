@@ -25,6 +25,8 @@ class Arbalest extends Component {
     
     private var detectionCircle: CollisionCircle;
 
+    private var fireSound: hxd.res.Sound;
+
     private override function init() {
         animationPlayer = cast parentEntity.getComponentOfType(AnimationPlayer);
         building = cast parentEntity.getComponentOfType(Building);
@@ -41,6 +43,8 @@ class Arbalest extends Component {
         building.addDrawable(crossbow);
 
         detectionCircle = new CollisionCircle("Detection", 192);
+
+        fireSound = Res.Sounds.Laser;
     }
 
     private override function update() {
@@ -78,6 +82,7 @@ class Arbalest extends Component {
     }
 
     private function fire() {
+        fireSound.play();
         var angle: Float = hxd.Math.radToDeg(crossbow.rotation);
         var direction: Vec2 = Vector.angleToVec2(angle, 1);
         var spawnPos: Vec2 = parentEntity.getPosition();

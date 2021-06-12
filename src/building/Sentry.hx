@@ -23,6 +23,8 @@ class Sentry extends Component {
 
     private var bulletVelocity = 8;
 
+    private var fireSound: hxd.res.Sound;
+
     private override function init() {
         building = cast parentEntity.getComponentOfType(Building);
 
@@ -39,6 +41,8 @@ class Sentry extends Component {
         detectionShape = new CollisionCircle("Detection", 128);
 
         gun.onFrameEventSubscribe(1, fire);
+
+        fireSound = Res.Sounds.Gunshot;
     }
 
     private override function addedToRoom() {
@@ -82,6 +86,7 @@ class Sentry extends Component {
     }
 
     public function fire() {
+        fireSound.play();
         var angle: Float = hxd.Math.radToDeg(gun.rotation);
         var direction: Vec2 = Vector.angleToVec2(angle, 1);
         var spawnPos: Vec2 = parentEntity.getPosition() + direction*10;

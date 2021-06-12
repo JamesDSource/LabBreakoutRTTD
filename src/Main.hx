@@ -47,12 +47,12 @@ class Main extends hxd.App {
     }
 
     //// * Loading assets by generating a pak file
-    //private override function loadAssets(onLoad: () -> Void) {
-    //    cherry.tools.ResTools.initPakAuto(onLoad, (p) -> trace(p));
-    //}
+    private override function loadAssets(onLoad: () -> Void) {
+        cherry.tools.ResTools.initPakAuto(onLoad, (p) -> trace(p));
+    }
 
     public static function main() {
-        hxd.Res.initLocal();
+        //hxd.Res.initLocal();
         new Main();
     }
 }

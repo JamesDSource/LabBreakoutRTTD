@@ -1,5 +1,6 @@
 package building;
 
+import hxd.Res;
 import hcb.comp.Component;
 
 class Building extends Component {
@@ -16,6 +17,8 @@ class Building extends Component {
 
     public static final blue = new hxsl.Types.Vec(0.1, 0.1, 0.9);
     public static final red = new hxsl.Types.Vec(0.9, 0.1, 0.1);
+    
+    private var buildingSound: hxd.res.Sound;
 
     public function new(name: String, cost: Int) {
         super(name);
@@ -28,6 +31,7 @@ class Building extends Component {
         placeable.placementCanceled = placementCanceled;
         health = cast parentEntity.getComponentOfType(Health);
         health.deathEventSubscribe(() -> parentEntity.remove());
+        buildingSound = Res.Sounds.BuildingDone;
     }
 
     private function placementCanceled() {
@@ -58,6 +62,7 @@ class Building extends Component {
         if(progress >= 1) {
             done = true;
             progress = 1;
+            buildingSound.play();
 
             for(drawable in drawables)
                 drawable.removeShader(shader);

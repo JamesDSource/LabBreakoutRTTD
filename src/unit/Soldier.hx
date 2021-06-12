@@ -39,6 +39,8 @@ class Soldier extends Unit {
     private var fireDelay: Int = 25;
     private var fireTimer: Int = 0;
 
+    private var fireSound: hxd.res.Sound;
+
     private final maxRange = 256;
 
     private final defendingStatus: String = "Defending";
@@ -64,6 +66,7 @@ class Soldier extends Unit {
 
     private override function init() {
         super.init();
+        fireSound = Res.Sounds.Gunshot;
 
         body = Res.TexturePack.get("SoldierDead");
 
@@ -279,6 +282,11 @@ class Soldier extends Unit {
     }
 
     public function fire() {
+        if(room == null)
+            return;
+
+        fireSound.play();
+
         var damage: Float = 20;
         var angle: Float = hxd.Math.radToDeg(shootAnimation.rotation);
         var direction: Vec2 = Vector.angleToVec2(angle, 1);

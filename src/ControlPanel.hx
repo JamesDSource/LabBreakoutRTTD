@@ -52,6 +52,8 @@ class ControlPanel extends Object {
     private var waveTime: h2d.Text;
     private var reconditeCounter: h2d.Text;
 
+    private var selectSound: hxd.res.Sound;
+
     public static final instance: ControlPanel = new ControlPanel();
 
     private function set_metals(metals: Int): Int {
@@ -172,6 +174,8 @@ class ControlPanel extends Object {
         reconditeCounter.x = infoTextMargin;
         reconditeCounter.y = infoTextPos;
         reconditeCounter.text = 'Recondite: $metals';
+
+        selectSound = Res.Sounds.MenuSelect;
     }
 
     public function offsetSelectedIndex(offset: Int) {
@@ -257,6 +261,7 @@ class ControlPanel extends Object {
                 }
 
                 if(hxd.Key.isReleased(hxd.Key.MOUSE_LEFT)) {
+                    selectSound.play();
                     if(querying == null) {
                         button.action.callBack();
                     }

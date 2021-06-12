@@ -11,6 +11,7 @@ typedef ResearchData = {
 class Research {
     public static var researchData: Array<ResearchData> = [];
     private static var researchProgress: Map<String, {start: Int, left: Int, unlocked: Bool, ?onUnlock: () -> Void}> = [];
+    private static var researchDoneSound: hxd.res.Sound;
 
     public static final unitMoveSpeedUpgrade: String        = "+ Unit Move Speed";
     public static final unitMoveSpeedUpgrade2: String       = "++ Unit Move Speed";
@@ -28,13 +29,28 @@ class Research {
     public static final buildingDamageUpgrade: String       = "+ Building Damage";
     public static final teleporterUnlock: String            = "Escape Teleporter";
 
-    public static var unitSpeedMult: Float = 1.0;
-    public static var repairSpeedMult: Float = 1.0;
-    public static var soldierHealSpeedMult: Float = 1.0;
-    public static var timeBonus: Float = 0.0;
-    public static var towerDamageMult: Float = 1.0;
-    public static var towerRangeMult: Float = 1.0;
-    public static var towerFireRateMult: Float = 1.0;
+    public static var unitSpeedMult: Float;
+    public static var repairSpeedMult: Float;
+    public static var soldierHealSpeedMult: Float;
+    public static var timeBonus: Float;
+    public static var towerDamageMult: Float;
+    public static var towerRangeMult: Float;
+    public static var towerFireRateMult: Float;
+
+    public static function resetResearch() {
+        unitSpeedMult           = 1.0;
+        repairSpeedMult         = 1.0;
+        soldierHealSpeedMult    = 1.0;
+        timeBonus               = 0.0;
+        towerDamageMult         = 1.0;
+        towerRangeMult          = 1.0;
+        towerFireRateMult       = 1.0;
+
+        for(research in researchProgress) {
+            research.left = research.start;
+            research.unlocked = false;
+        }
+    }
 
     public static function initResearch() {
         // * Add research data
@@ -147,6 +163,9 @@ class Research {
                 onUnlock: data.onUnlock
             };
         }
+
+        // * Sound
+        researchDoneSound = Res.Sounds.ResearchFinished;
     }
 
     public static function addProgress(name: String) {
@@ -165,6 +184,7 @@ class Research {
                 progress.onUnlock();
             
             progress.unlocked = true;
+            researchDoneSound.play();
         }
     }
 

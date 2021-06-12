@@ -42,6 +42,8 @@ class Room extends hcb.Room {
     }
 
     public override function build() {
+        Research.resetResearch();
+
         drawTo = new h2d.Layers();
         scene.add(drawTo, 0);
 

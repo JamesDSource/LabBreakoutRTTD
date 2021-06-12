@@ -12,6 +12,8 @@ class Explosion extends Component {
 
     private var animationPlayer: AnimationPlayer;
 
+    private var explosionSound: hxd.res.Sound;
+
     public function new(name: String, tagCheck: String, damage: Float = 5, radius: Float = 16) {
         super(name);
         this.damage = damage;
@@ -25,9 +27,12 @@ class Explosion extends Component {
         animationPlayer.addAnimationSlot("Main", 0, anim);
         anim.loop = false;
         anim.onAnimEnd = () -> parentEntity.remove();
+        explosionSound = Res.Sounds.Explosion;
     }
 
     private override function addedToRoom() {
+        explosionSound.play();
+
         var collisionCircle: CollisionCircle = new CollisionCircle("Circle", radius);
         var results: Array<CollisionInfo> = [];
         room.collisionWorld.getCollisionAt(collisionCircle, results, parentEntity.getPosition(), tagCheck);
